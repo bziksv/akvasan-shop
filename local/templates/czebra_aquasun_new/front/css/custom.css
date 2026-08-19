@@ -1,4 +1,51 @@
 
+/* Global: убираем стандартную браузерную рамку focus/active по всему сайту */
+a,
+button,
+input,
+select,
+textarea,
+summary,
+label,
+[tabindex],
+[role="button"],
+[role="link"] {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a:focus,
+a:active,
+a:focus-visible,
+button:focus,
+button:active,
+button:focus-visible,
+input:focus,
+input:active,
+input:focus-visible,
+select:focus,
+select:active,
+select:focus-visible,
+textarea:focus,
+textarea:active,
+textarea:focus-visible,
+summary:focus,
+summary:active,
+summary:focus-visible,
+label:focus,
+label:active,
+label:focus-visible,
+[tabindex]:focus,
+[tabindex]:active,
+[tabindex]:focus-visible,
+[role="button"]:focus,
+[role="button"]:active,
+[role="button"]:focus-visible,
+[role="link"]:focus,
+[role="link"]:active,
+[role="link"]:focus-visible {
+    outline: none !important;
+}
+
 .link-mobile-filter {
     display: none;
     color: #777;
@@ -352,37 +399,6 @@
     top: 0;
     border-color: #e8ecf0;
     border-radius: 12px;
-}
-
-/* Header auth links — убираем стандартную браузерную рамку при клике/focus */
-.wrapp-registration a.entry-site,
-.wrapp-registration a.reg-site,
-.wrapp-registration a.lk {
-    -webkit-tap-highlight-color: transparent;
-}
-
-.wrapp-registration a.entry-site:focus,
-.wrapp-registration a.reg-site:focus,
-.wrapp-registration a.lk:focus,
-.wrapp-registration a.entry-site:active,
-.wrapp-registration a.reg-site:active,
-.wrapp-registration a.lk:active {
-    outline: none;
-}
-
-.wrapp-registration a.entry-site:focus-visible,
-.wrapp-registration a.reg-site:focus-visible,
-.wrapp-registration a.lk:focus-visible {
-    box-shadow: 0 0 0 2px rgba(227, 143, 50, 0.35);
-}
-
-.wrapp-registration a.entry-site:focus-visible {
-    border-radius: 15px;
-}
-
-.wrapp-registration a.reg-site:focus-visible,
-.wrapp-registration a.lk:focus-visible {
-    border-radius: 4px;
 }
 
 #auth .login-site.container-main,
