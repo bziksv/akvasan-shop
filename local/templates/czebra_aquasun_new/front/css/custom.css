@@ -354,6 +354,37 @@
     border-radius: 12px;
 }
 
+/* Header auth links — убираем стандартную браузерную рамку при клике/focus */
+.wrapp-registration a.entry-site,
+.wrapp-registration a.reg-site,
+.wrapp-registration a.lk {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.wrapp-registration a.entry-site:focus,
+.wrapp-registration a.reg-site:focus,
+.wrapp-registration a.lk:focus,
+.wrapp-registration a.entry-site:active,
+.wrapp-registration a.reg-site:active,
+.wrapp-registration a.lk:active {
+    outline: none;
+}
+
+.wrapp-registration a.entry-site:focus-visible,
+.wrapp-registration a.reg-site:focus-visible,
+.wrapp-registration a.lk:focus-visible {
+    box-shadow: 0 0 0 2px rgba(227, 143, 50, 0.35);
+}
+
+.wrapp-registration a.entry-site:focus-visible {
+    border-radius: 15px;
+}
+
+.wrapp-registration a.reg-site:focus-visible,
+.wrapp-registration a.lk:focus-visible {
+    border-radius: 4px;
+}
+
 #auth .login-site.container-main,
 #auth .auth-card {
     max-width: 100%;
