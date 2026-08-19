@@ -13,61 +13,90 @@ $templateData = array(
 	'TEMPLATE_CLASS' => 'bx_'.$arParams['TEMPLATE_THEME']
 );
 
+$compareGroups = !empty($arResult['GROUPS']) ? $arResult['GROUPS'] : [];
+if (empty($compareGroups) && !empty($arResult['ITEMS'])) {
+	$compareGroups = [[
+		'ID' => 0,
+		'NAME' => '',
+		'ITEMS' => $arResult['ITEMS'],
+		'SHOW_PROPERTIES' => $arResult['SHOW_PROPERTIES'],
+	]];
+}
+$showGroupTabs = count($compareGroups) > 1;
 ?>
 
+<?if($showGroupTabs):?>
+<div class="compare-tabs" role="tablist">
+	<?foreach($compareGroups as $index => $group):?>
+		<button
+			type="button"
+			class="compare-tabs__btn<?=$index === 0 ? ' is-active' : ''?>"
+			role="tab"
+			aria-selected="<?=$index === 0 ? 'true' : 'false'?>"
+			data-compare-tab="<?=(int)$group['ID']?>"
+		>
+			<?=htmlspecialcharsbx($group['NAME'])?>
+			<span class="compare-tabs__count"><?=count($group['ITEMS'])?></span>
+		</button>
+	<?endforeach;?>
+</div>
+<?endif;?>
 
-<div class="workarea-product-compare">
-	<div class="compare-slider">
-		<div class="bxslider">
-			<?foreach($arResult['ITEMS'] as $arItem):?>
-			<div class="slide-compare">
-				<div class="workarea-slide-compare">
-					<div class="img-product-compare">
-						<a href="<?=$arItem["DETAIL_PAGE_URL"]?>"><img src="<?=$arItem["DETAIL_PICTURE"]["SRC"]?>" alt="<?=$arItem["DETAIL_PICTURE"]["ALT"]?>"></a>
+<?foreach($compareGroups as $index => $group):?>
+<div class="compare-panel<?=(!$showGroupTabs || $index === 0) ? ' is-active' : ''?>" data-compare-panel="<?=(int)$group['ID']?>">
+	<div class="workarea-product-compare">
+		<div class="compare-slider">
+			<div class="bxslider">
+				<?foreach($group['ITEMS'] as $arItem):?>
+				<div class="slide-compare">
+					<div class="workarea-slide-compare">
+						<div class="img-product-compare">
+							<a href="<?=$arItem["DETAIL_PAGE_URL"]?>"><img src="<?=$arItem["DETAIL_PICTURE"]["SRC"]?>" alt="<?=$arItem["DETAIL_PICTURE"]["ALT"]?>"></a>
+						</div>
+						<div class="name-product-compare">
+							<a href="<?=$arItem["DETAIL_PAGE_URL"]?>"><?=$arItem['NAME']?></a>
+						</div>
+						<div class="block-price-compare">
+							<span><?=str_replace("руб.","р.",$arItem['MIN_PRICE']['PRINT_VALUE'])?></span>
+							<a href="" data-cz-buy="<?=$arItem["ID"]?>" data-cz="addtocart">В корзину</a>
+						</div>
+						<div class="deleted-product-compare">
+							<a href="" data-compare-id="<?=$arItem["ID"]?>">
+								<span class="hidden-deleted hidden-sm hidden-xs">Удалить</span>
+								<div class="deleted hidden-sm hidden-xs"></div>
+								<span class="del-icon hidden-lg hidden-md"></span>
+							</a>
+						</div>
 					</div>
-					<div class="name-product-compare">
-						<a href="<?=$arItem["DETAIL_PAGE_URL"]?>"><?=$arItem['NAME']?></a> 
-					</div>
-					<div class="block-price-compare">
-						<span><?=str_replace("руб.","р.",$arItem['MIN_PRICE']['PRINT_VALUE'])?></span>
-						<a href="" data-cz-buy="<?=$arItem["ID"]?>" data-cz="addtocart">В корзину</a>
-					</div>
-					<div class="deleted-product-compare">
-						<a href="" data-compare-id="<?=$arItem["ID"]?>">
-							<span class="hidden-deleted hidden-sm hidden-xs">Удалить</span>
-							<div class="deleted hidden-sm hidden-xs"></div>
-							<span class="del-icon hidden-lg hidden-md"></span>
-						</a>
-						
+					<div class="value-info">
+						<?foreach($arItem['DISPLAY_PROPERTIES'] as $key1=>$val1):?>
+							<?if(!in_array($key1,Czebra\Base\Consts::STOP_PROP_ELEMENT)):?>
+								<div class="wrapp-info">
+									<?if($val1['VALUE'] !=""):?>
+										<span><?=$val1['VALUE']?></span>
+									<?else:?>
+										<span>-</span>
+									<?endif;?>
+								</div>
+							<?endif;?>
+						<?endforeach;?>
 					</div>
 				</div>
-				<div class="value-info">
-					<?foreach($arItem['DISPLAY_PROPERTIES'] as $key1=>$val1):?>
-						<?if(!in_array($key1,Czebra\Base\Consts::STOP_PROP_ELEMENT)):?>
-							<div class="wrapp-info">
-								<?if($val1['VALUE'] !=""):?>
-									<span><?=$val1['VALUE']?></span>
-								<?else:?>
-									<span>-</span>
-								<?endif;?>
-							</div>	
-						<?endif;?>
+				<?endforeach;?>
+			</div>
+			<div class="fixed-slide">
+				<div class="empty-block"></div>
+				<div class="key-info">
+					<?foreach($group['SHOW_PROPERTIES'] as $key2=>$val2):
+						if(!in_array($key2,Czebra\Base\Consts::STOP_PROP_ELEMENT)):?>
+						<div class="wrapp-info">
+							<span><?=$val2['NAME']?></span>
+						</div>
+						<?endif?>
 					<?endforeach;?>
 				</div>
-			</div>
-			<?endforeach;?>
-		</div>
-		<div class="fixed-slide">
-			<div class="empty-block"></div>
-			<div class="key-info">
-				<?foreach($arResult['SHOW_PROPERTIES'] as $key2=>$val2):
-					if(!in_array($key2,Czebra\Base\Consts::STOP_PROP_ELEMENT)):?>
-					<div class="wrapp-info">
-						<span><?=$val2['NAME']?></span>
-					</div>	
-					<?endif?>
-				<?endforeach;?>
 			</div>
 		</div>
 	</div>
 </div>
+<?endforeach;?>

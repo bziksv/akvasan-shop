@@ -425,18 +425,62 @@ $(document).ready(function(){
     $(".container-catalog .row .container-product").setEqualHeight();
 
 
-    slider = $('.compare-slider .bxslider').bxSlider({
-        nextText: '',
-        prevText: '',
-        minSlides:2,
-        maxSlides:3,
-        slideWidth: 285,
-        moveSlides:1,
-        pager:false,
-        keyboardEnabled: true,
-        infiniteLoop: false,
-        touchEnabled: false,
-    });
+    function getCompareSliderOptions() {
+        return {
+            nextText: '',
+            prevText: '',
+            minSlides: 2,
+            maxSlides: 3,
+            slideWidth: 285,
+            moveSlides: 1,
+            pager: false,
+            keyboardEnabled: true,
+            infiniteLoop: false,
+            touchEnabled: false,
+        };
+    }
+
+    function initCompareSlidersIn($root) {
+        $root.find('.compare-slider .bxslider').each(function () {
+            var $slider = $(this);
+
+            if ($slider.data('compareSliderInited')) {
+                var existingSlider = $slider.closest('.compare-slider').data('compareSlider');
+                if (existingSlider && existingSlider.reloadSlider) {
+                    existingSlider.reloadSlider();
+                }
+                return;
+            }
+
+            var compareSlider = $slider.bxSlider(getCompareSliderOptions());
+            $slider.closest('.compare-slider').data('compareSlider', compareSlider);
+            $slider.data('compareSliderInited', true);
+        });
+    }
+
+    if ($('.compare-tabs').length) {
+        initCompareSlidersIn($('.compare-panel.is-active'));
+
+        $('.compare-tabs__btn').on('click', function () {
+            var tabId = $(this).data('compare-tab');
+
+            if ($(this).hasClass('is-active')) {
+                return false;
+            }
+
+            $('.compare-tabs__btn').removeClass('is-active').attr('aria-selected', 'false');
+            $(this).addClass('is-active').attr('aria-selected', 'true');
+            $('.compare-panel').removeClass('is-active');
+
+            var $panel = $('.compare-panel[data-compare-panel="' + tabId + '"]');
+            $panel.addClass('is-active');
+            initCompareSlidersIn($panel);
+
+            return false;
+        });
+    } else {
+        initCompareSlidersIn($(document));
+    }
 
     $('.deleted-product-compare .deleted').mouseover(function(){
         $(this).siblings('.hidden-deleted').show();
@@ -567,19 +611,11 @@ function compareEvents()
             url: '/local/ajax/compare/?id=' + $(this).attr('data-compare-id') + "&action=delete" ,
             cache: false,
             success: function (data) {
-                //data = JSON.parse(data);
-                //$(".comparison .counter-comparison").text(data.COUNT);
+                data = JSON.parse(data);
+                $(".comparison .counter-comparison").text(data.COUNT);
+                window.location.reload();
             }
         });
-
-        //скрывать предка
-        $(this).closest('.slide-compare').remove();
-
-        slider.goToPrevSlide();
-
-       if ($(".slide-compare").length == 0) {
-            window.location.href = "/catalog/compare.php";
-        }
 
         return false;
     });

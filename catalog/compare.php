@@ -3,6 +3,8 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("Сравнение товаров");
 $APPLICATION->SetPageProperty("title", "Сравнение товаров");
 $APPLICATION->SetPageProperty("description", "Сравнение товаров — интернет-магазин АкваСан");
+
+$comparePropertyCodes = include $_SERVER["DOCUMENT_ROOT"] . "/local/php_interface/include/catalog_compare_property_codes.php";
 ?>
 <div class="container-compare"><div class="title-compare">Сравнение товаров</div>
 <?$APPLICATION->IncludeComponent(
@@ -19,7 +21,7 @@ $APPLICATION->SetPageProperty("description", "Сравнение товаров 
 			0 => "NAME",
 			1 => "DETAIL_PICTURE",
 		],
-		"PROPERTY_CODE" => [],
+		"PROPERTY_CODE" => $comparePropertyCodes,
 		"NAME" => "CATALOG_COMPARE_LIST",
 		"CACHE_TYPE" => "A",
 		"CACHE_TIME" => "36000000",

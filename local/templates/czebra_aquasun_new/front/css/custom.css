@@ -1647,3 +1647,100 @@ label:focus-visible,
     }
 }
 
+.container-compare .compare-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin: 0;
+    padding: 20px 22px 24px;
+    border-bottom: 1px solid #eee;
+}
+
+.container-compare:has(.compare-tabs) .title-compare {
+    border-bottom: none;
+}
+
+.container-compare .compare-tabs__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 44px;
+    height: auto;
+    padding: 10px 24px;
+    margin: 0;
+    width: auto;
+    position: static;
+    top: auto;
+    right: auto;
+    border: 1px solid #dde3e8;
+    border-radius: 999px;
+    background: #fff;
+    font-family: Roboto-Medium, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.2;
+    color: #253746;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.container-compare .compare-tabs__btn:hover {
+    border-color: #e38f32;
+    color: #e38f32;
+    background: #fff;
+}
+
+.container-compare .compare-tabs__btn.is-active {
+    border-color: #e38f32;
+    background: #e38f32;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(227, 143, 50, 0.28);
+}
+
+.container-compare .compare-tabs__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: rgba(37, 55, 70, 0.08);
+    font-family: Roboto-Bold, Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1;
+}
+
+.container-compare .compare-tabs__btn.is-active .compare-tabs__count {
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+}
+
+.container-compare .compare-panel {
+    display: none;
+}
+
+.container-compare .compare-panel.is-active {
+    display: block;
+    padding-top: 6px;
+}
+
+@media (max-width: 768px) {
+    .container-compare .compare-tabs {
+        padding: 16px 14px 18px;
+        gap: 10px;
+    }
+
+    .container-compare .compare-tabs__btn {
+        min-height: 40px;
+        padding: 8px 18px;
+        font-size: 13px;
+    }
+}
+
