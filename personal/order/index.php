@@ -8,7 +8,8 @@ if (!$USER->IsAuthorized()) {
 	LocalRedirect("/login/?backurl=" . urlencode($APPLICATION->GetCurPageParam()));
 }
 ?>
-<div class="container-main">
+<div class="container-main personal-section personal-section--orders">
+	<?php include $_SERVER['DOCUMENT_ROOT'] . SITE_TEMPLATE_PATH . '/include/personal_back.php'; ?>
 	<div class="title"><h1>История заказов</h1></div>
 
 <?$APPLICATION->IncludeComponent("bitrix:sale.personal.order", "", array(
@@ -17,7 +18,7 @@ if (!$USER->IsAuthorized()) {
 	"ORDERS_PER_PAGE" => "10",
 	"PATH_TO_PAYMENT" => "/personal/order/payment/",
 	"PATH_TO_BASKET" => "/personal/cart/",
-	"SET_TITLE" => "Y",
+	"SET_TITLE" => "N",
 	"SAVE_IN_SESSION" => "N",
 	"NAV_TEMPLATE" => "arrows",
 	"SEF_URL_TEMPLATES" => array(

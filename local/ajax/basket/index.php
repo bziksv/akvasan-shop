@@ -3,6 +3,8 @@ define("NO_KEEP_STATISTIC", true);
 define("NOT_CHECK_PERMISSIONS", true);
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
+\Bitrix\Main\Composite\Helper::setEnabled(false);
+
 use Bitrix\Main\Application;
 use Czebra\BFS\Basket;
 
@@ -15,6 +17,10 @@ if($request['action'] == 'add') {
     );
 
     Basket::Add($param);
+
+    \Bitrix\Main\Loader::includeModule('sale');
+    $fuserId = \Bitrix\Sale\Fuser::getId(true);
+    \Bitrix\Sale\BasketComponentHelper::updateFUserBasketQuantity($fuserId, SITE_ID);
 
     $APPLICATION->IncludeComponent(
         "bitrix:sale.basket.basket.line",
@@ -35,6 +41,7 @@ if($request['action'] == 'add') {
             "SHOW_PRODUCTS" => "N",
             "SHOW_TOTAL_PRICE" => "N",
             "CZ_AJAX" => "Y",
+            "COMPOSITE_FRAME_MODE" => "N",
         )
     );
 } elseif($request['action'] == 'list') {

@@ -40,44 +40,36 @@ $curPage = $APPLICATION->GetCurPage(true);?><?/*
 </div></div></main>
     <footer class="footer">
         <div class="container">
-            <div class="row">
-                <div class="logo-footer col-lg-3 col-md-3 col-xs-6">
-                    <img src="<?=SITE_TEMPLATE_PATH?>/front/img/logo-footer.png" alt="Логотип" class="img-responsive">
-                    <span>© <?=date("Y")?> Все права зашищены</span>
-                </div>
-                <div class="working-time-footer hidden-lg hidden-md col-xs-6">
-                    <div class="working-time">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <img src="<?=SITE_TEMPLATE_PATH?>/front/img/logo-footer.png" alt="АкваСан" class="footer-brand__logo">
+                    <p class="footer-brand__copy">© <?=date("Y")?> Все права защищены</p>
+                    <div class="footer-hours visible-xs visible-sm">
                         <p>Пн-Пт <span>09:00 - 18:00</span></p>
                         <p>Сб-Вс <span>09:00 - 17:00</span></p>
                     </div>
                 </div>
-                <div class="phone-footer col-lg-2 col-lg-push-2 col-md-2 col-md-push-2">
-                    <a href="tel:+74732299621">+7 (473) 229-96-21</a>
-                    <a href="" id="call-order-footer" class="call-back-footer">Заказать звонок</a>
-                    <div class="social-footer hidden-sm hidden-xs">
-                        <a href="https://vk.com/aquasanvoronezh"><div class="vk-footer"></div></a>
-                        <?/*<a href="#"><div class="ok-footer"></div></a>*/?>
+
+                <div class="footer-address">
+                    <p class="footer-address__line">г. Воронеж,</p>
+                    <p class="footer-address__line">ул. Холмистая 1г,</p>
+                    <p class="footer-address__line">павильон 113</p>
+                    <div class="footer-social visible-xs visible-sm">
+                        <a href="https://vk.com/aquasanvoronezh" class="footer-social__link" aria-label="ВКонтакте"><span class="vk-footer"></span></a>
+                        <a href="https://www.instagram.com/akvasanshop/" class="footer-social__link" aria-label="Instagram"><span class="insta-footer"></span></a>
                     </div>
-
-                    <div class='czebra'><a href="http://www.czebra.ru" target="_blank"><img src="/local/templates/czebra_aquasun_new/front/img/logo-cz.png" alt="Цветная зебра"></a></div>
-
-
-					<div class="logo-prime"><a href="https://prime-ltd.su/?from=https://akvasan-shop.ru/" rel="nofollow" target="_blank"><img src="http://prime-ltd.su/logo/white.svg"></a></div>
                 </div>
-                <div class="address-footer col-lg-2 col-lg-pull-2 col-md-2 col-md-pull-2">
-                    <span>г. Воронеж,</span>
-                    <span>ул. Холмистая 1г,</span>
-                    <span>павильон 113</span>
 
-                    <div class="social-footer hidden-lg hidden-md">
-                        <a href="https://vk.com/aquasanvoronezh"><div class="vk-footer"></div></a>
-                        <?/*<a href="#"><div class="ok-footer"></div></a>*/?>
-                        <a href="https://www.instagram.com/akvasanshop/"><div class="insta-footer"></div></a>
+                <div class="footer-contacts">
+                    <a href="tel:+74732299621" class="footer-contacts__phone">+7 (473) 229-96-21</a>
+                    <a href="" id="call-order-footer" class="footer-contacts__callback call-back-footer">Заказать звонок</a>
+                    <div class="footer-social hidden-xs hidden-sm">
+                        <a href="https://vk.com/aquasanvoronezh" class="footer-social__link" aria-label="ВКонтакте"><span class="vk-footer"></span></a>
                     </div>
-
                 </div>
-                <div class="footer-menu col-lg-5 col-md-5">
-                    <div class="footer-menu-top">
+
+                <div class="footer-nav">
+                    <div class="footer-nav__top">
                         <?$APPLICATION->IncludeComponent(
                             "bitrix:menu",
                             "simple",
@@ -95,43 +87,54 @@ $curPage = $APPLICATION->GetCurPage(true);?><?/*
                             )
                         );?>
                     </div>
-                    <div class="footer-menu-bottom">
-                        <div class="row">
-                            <?$APPLICATION->IncludeComponent(
-                                "bitrix:menu",
-                                "catalog_footer",
-                                Array(
-                                    "ALLOW_MULTI_SELECT" => "N",
-                                    "CHILD_MENU_TYPE" => "dop",
-                                    "DELAY" => "N",
-                                    "MAX_LEVEL" => "1",
-                                    "MENU_CACHE_GET_VARS" => array(""),
-                                    "MENU_CACHE_TIME" => "360000",
-                                    "MENU_CACHE_TYPE" => "A",
-                                    "MENU_CACHE_USE_GROUPS" => "Y",
-                                    "ROOT_MENU_TYPE" => "catalog_footer",
-                                    "USE_EXT" => "Y"
-                                )
-                             );?>
-                        </div>
-                    </div>
                 </div>
             </div>
-            <div class="documents-menu">
-                <ul>
-                    <li><a href="/country/">Страны товаров</a></li>
-                    <!--<li><a href="/offer/">Оферта</a></li>
-                    <li><a href="/personal-data-akvasan.pdf">Политика конфиденциальности</a></li>
-                    <li><a href="/politika-cookies-akvasan.pdf">Политика использования cookie</a></li>
-                    <li><a href="/rules-recommendation-akvasan.pdf">Правила применения рекомендательных технологий</a></li>-->
-                    <li><a href="/articles/">Статьи</a></li>
-                    <li><a href="/contacts/#reviews">Отзывы</a></li>
-					<li><a href="/vozvrat/vozvrat.php">Возврат</a></li>
-                </ul>
+
+            <div class="footer-catalog">
+                <?$APPLICATION->IncludeComponent(
+                    "bitrix:menu",
+                    "catalog_footer",
+                    Array(
+                        "ALLOW_MULTI_SELECT" => "N",
+                        "CHILD_MENU_TYPE" => "dop",
+                        "DELAY" => "N",
+                        "MAX_LEVEL" => "1",
+                        "MENU_CACHE_GET_VARS" => array(""),
+                        "MENU_CACHE_TIME" => "360000",
+                        "MENU_CACHE_TYPE" => "A",
+                        "MENU_CACHE_USE_GROUPS" => "Y",
+                        "ROOT_MENU_TYPE" => "catalog_footer",
+                        "USE_EXT" => "Y"
+                    )
+                 );?>
             </div>
 
-			<div style="color: #fff; border-top: #fff 1px solid; padding-top: 15px; margin-top: 20px;">Для обеспечения корректной работы сайта мы используем файлы <a style="color: #fff;" target="_blank" href="/politika-cookies-akvasan.pdf">cookie</a> и <a style="color: #fff;" target="_blank" href="/rules-recommendation-akvasan.pdf">рекомендательные технологии</a>. Сбор информации необходим для персонализации контента, анализа посещаемости и оптимизации функционала. Продолжая пользоваться сайтом, вы даёте согласие на обработку персональных данных в соответствии с <a style="color: #fff;" target="_blank" href="/personal-data-akvasan.pdf">Политикой обработки персональных данных</a>.</div>
+            <div class="footer-secondary">
+                <div class="documents-menu">
+                    <ul>
+                        <li><a href="/country/">Страны товаров</a></li>
+                        <li><a href="/articles/">Статьи</a></li>
+                        <li><a href="/contacts/#reviews">Отзывы</a></li>
+                        <li><a href="/vozvrat/vozvrat.php">Возврат</a></li>
+                    </ul>
+                </div>
 
+                <div class="footer-partner">
+                    <a href="https://prime-ltd.su/?from=https://akvasan-shop.ru/" rel="nofollow" target="_blank">
+                        <img src="https://prime-ltd.su/logo/white.svg" alt="Prime — продвижение сайтов" class="footer-partner__logo">
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-legal">
+                Для обеспечения корректной работы сайта мы используем файлы
+                <a href="/politika-cookies-akvasan.pdf" target="_blank">cookie</a>
+                и
+                <a href="/rules-recommendation-akvasan.pdf" target="_blank">рекомендательные технологии</a>.
+                Сбор информации необходим для персонализации контента, анализа посещаемости и оптимизации функционала.
+                Продолжая пользоваться сайтом, вы даёте согласие на обработку персональных данных в соответствии с
+                <a href="/personal-data-akvasan.pdf" target="_blank">Политикой обработки персональных данных</a>.
+            </div>
         </div>
     </footer>
     <?if($_REQUEST["formresult"] == "addok"):?>

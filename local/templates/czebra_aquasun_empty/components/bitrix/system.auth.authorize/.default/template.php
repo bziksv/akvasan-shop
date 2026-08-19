@@ -1,14 +1,16 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die(); ?>
-<div class="container-main  login-site">
-    <div class="title"><h1>Авторизация</h1></div>
-    <div class="message">
+<div class="auth-card login-site">
+    <div class="auth-card__header title">
+        <h1 class="auth-card__title">Авторизация</h1>
+    </div>
+    <div class="auth-card__message message">
     <?
     ShowMessage($arParams["~AUTH_RESULT"]);
     ShowMessage($arResult['ERROR_MESSAGE']);
     ?>
     </div>
-    <br/>
-	<form name="form_auth" method="post" target="_top" action="<?=$arResult["AUTH_URL"]?>">
+
+	<form class="auth-form" name="form_auth" method="post" target="_top" action="<?=$arResult["AUTH_URL"]?>">
 
 		<input type="hidden" name="AUTH_FORM" value="Y" />
 		<input type="hidden" name="TYPE" value="AUTH" />
@@ -19,62 +21,61 @@
 		<input type="hidden" name="<?=$key?>" value="<?=$value?>" />
 		<?endforeach?>
 
-		<table class="bx-auth-table">
-			<tr>
-				<td><input class="bx-auth-input" type="text" placeholder="<?=GetMessage("AUTH_LOGIN")?>" name="USER_LOGIN" maxlength="255" value="<?=$arResult["LAST_LOGIN"]?>" data-cz-validated-type="data" data-cz-validated-group="group_auth" data-cz-validated-msg="* Необходимо заполнить поле" /></td>
-			</tr>
-			<tr>
-				<td><input class="bx-auth-input" type="password" name="USER_PASSWORD" maxlength="255" autocomplete="off" placeholder="<?=GetMessage("AUTH_PASSWORD")?>" data-cz-validated-type="data" data-cz-validated-group="group_auth" data-cz-validated-msg="* Необходимо заполнить поле"/>
+		<div class="auth-form__field">
+			<input class="bx-auth-input auth-form__input" type="text" placeholder="<?=GetMessage("AUTH_LOGIN")?>" name="USER_LOGIN" maxlength="255" value="<?=$arResult["LAST_LOGIN"]?>" data-cz-validated-type="data" data-cz-validated-group="group_auth" data-cz-validated-msg="* Необходимо заполнить поле" />
+		</div>
+
+		<div class="auth-form__field auth-form__field--password">
+			<input class="bx-auth-input auth-form__input" type="password" name="USER_PASSWORD" maxlength="255" autocomplete="off" placeholder="<?=GetMessage("AUTH_PASSWORD")?>" data-cz-validated-type="data" data-cz-validated-group="group_auth" data-cz-validated-msg="* Необходимо заполнить поле"/>
 <?if($arResult["SECURE_AUTH"]):?>
-				<span class="bx-auth-secure" id="bx_auth_secure" title="<?echo GetMessage("AUTH_SECURE_NOTE")?>" style="display:none">
-					<div class="bx-auth-secure-icon"></div>
-				</span>
-				<noscript>
-				<span class="bx-auth-secure" title="<?echo GetMessage("AUTH_NONSECURE_NOTE")?>">
-					<div class="bx-auth-secure-icon bx-auth-secure-unlock"></div>
-				</span>
-				</noscript>
+			<span class="bx-auth-secure" id="bx_auth_secure" title="<?echo GetMessage("AUTH_SECURE_NOTE")?>" style="display:none">
+				<div class="bx-auth-secure-icon"></div>
+			</span>
+			<noscript>
+			<span class="bx-auth-secure" title="<?echo GetMessage("AUTH_NONSECURE_NOTE")?>">
+				<div class="bx-auth-secure-icon bx-auth-secure-unlock"></div>
+			</span>
+			</noscript>
 <script type="text/javascript">
 document.getElementById('bx_auth_secure').style.display = 'inline-block';
 </script>
 <?endif?>
-				</td>
-			</tr>
-			<?if($arResult["CAPTCHA_CODE"]):?>
-				<tr class='capt-code'>
-					<td><input type="hidden" name="captcha_sid" value="<?echo $arResult["CAPTCHA_CODE"]?>" />
-					<img src="/bitrix/tools/captcha.php?captcha_sid=<?echo $arResult["CAPTCHA_CODE"]?>" width="180" height="40" alt="CAPTCHA" /></td>
-				</tr>
-				<tr class="field-capt-code">
-					<td><input class="bx-auth-input" type="text" name="captcha_word" maxlength="50" value="" size="15" /></td>
-				</tr>
-			<?endif;?>
+		</div>
+
+		<?if($arResult["CAPTCHA_CODE"]):?>
+		<div class="auth-form__captcha capt-code">
+			<input type="hidden" name="captcha_sid" value="<?echo $arResult["CAPTCHA_CODE"]?>" />
+			<img src="/bitrix/tools/captcha.php?captcha_sid=<?echo $arResult["CAPTCHA_CODE"]?>" width="180" height="40" alt="CAPTCHA" />
+		</div>
+		<div class="auth-form__field field-capt-code">
+			<input class="bx-auth-input auth-form__input" type="text" name="captcha_word" maxlength="50" value="" placeholder="Код с картинки" />
+		</div>
+		<?endif;?>
+
+		<div class="auth-form__actions">
 <?if ($arResult["STORE_PASSWORD"] == "Y"):?>
-			<tr>
-				<td><input type="checkbox" id="USER_REMEMBER" name="USER_REMEMBER" value="Y" /><label for="USER_REMEMBER">&nbsp;<?=GetMessage("AUTH_REMEMBER_ME")?></label></td>
-			</tr>
+			<label class="auth-form__remember" for="USER_REMEMBER">
+				<input type="checkbox" id="USER_REMEMBER" name="USER_REMEMBER" value="Y" />
+				<span><?=GetMessage("AUTH_REMEMBER_ME")?></span>
+			</label>
+<?else:?>
+			<span></span>
 <?endif?>
-			<tr>
-				<td class="authorize-submit-cell" style='text-align: center;'><input type="submit" id="log" name="Login" value="<?=GetMessage("AUTH_AUTHORIZE")?>" /></td>
-			</tr>
-		</table>
-		
+			<input type="submit" class="auth-form__submit authorize-submit-cell" id="log" name="Login" value="<?=GetMessage("AUTH_AUTHORIZE")?>" />
+		</div>
 
 <?if ($arParams["NOT_SHOW_LINKS"] != "Y"):?>
-		<noindex>
-			<p>
+		<div class="auth-form__footer">
+			<noindex>
 				<a href="<?=str_replace('login.php','',$arResult["AUTH_FORGOT_PASSWORD_URL"])?>" rel="nofollow"><?=GetMessage("AUTH_FORGOT_PASSWORD_2")?></a>
-			</p>
-		</noindex>
+			</noindex>
+<?if($arResult["NEW_USER_REGISTRATION"] == "Y" && $arParams["AUTHORIZE_REGISTRATION"] != "Y"):?>
+			<noindex>
+				<span class="auth-form__footer-sep">·</span>
+				<a href="<?=str_replace('login.php','',$arResult["AUTH_REGISTER_URL"])?>" rel="nofollow"><?=GetMessage("AUTH_REGISTER")?></a>
+			</noindex>
 <?endif?>
-
-<?if($arParams["NOT_SHOW_LINKS"] != "Y" && $arResult["NEW_USER_REGISTRATION"] == "Y" && $arParams["AUTHORIZE_REGISTRATION"] != "Y"):?>
-		<noindex>
-			<p>
-				<a href="<?=str_replace('login.php','',$arResult["AUTH_REGISTER_URL"])?>" rel="nofollow"><?=GetMessage("AUTH_REGISTER")?></a><br />
-				<?=GetMessage("AUTH_FIRST_ONE")?>
-			</p>
-		</noindex>
+		</div>
 <?endif?>
 
 	</form>

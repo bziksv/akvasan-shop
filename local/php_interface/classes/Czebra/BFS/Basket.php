@@ -19,10 +19,9 @@ class Basket
                 $productID = $param["PRODUCT_ID"];
 
                 $quanity = 1;
-                if (isset($param["QUANITY"])
-                    && !empty($param["QUANITY"])
-                    && is_numeric($param["QUANITY"])
-                ) {
+                if (isset($param["QUANTITY"]) && !empty($param["QUANTITY"]) && is_numeric($param["QUANTITY"])) {
+                    $quanity = $param["QUANTITY"];
+                } elseif (isset($param["QUANITY"]) && !empty($param["QUANITY"]) && is_numeric($param["QUANITY"])) {
                     $quanity = $param["QUANITY"];
                 }
 
@@ -51,7 +50,10 @@ class Basket
     public static function getList()
     {
         if (Loader::includeModule("sale")) {
-            $result = array("STATUS" => "ОК");
+            $result = array(
+                "STATUS" => "ОК",
+                "basket" => array(),
+            );
 
             $dbBasketItems = \CSaleBasket::GetList(
                 array(),

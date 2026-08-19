@@ -1,6 +1,4 @@
-<?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
-$frame = $this->createFrame()->begin('<div class="cart col-lg-3 col-md-3"><a href="/personal/cart/"><div class="cart-header hidden-sm hidden-xs"><span class="counter-cart">2</span></div><div class="cart-mobil hidden-lg hidden-md"><span class="counter-cart-mobil">2</span></div></a></div>');
-?>
+<?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();?>
 <?if($arParams["CZ_AJAX"] == "Y"):?>
     <?if($arResult['NUM_PRODUCTS'] > 0) :?>
         <a href="<?=$arParams["PATH_TO_BASKET"]?>"><div class="cart-header hidden-sm hidden-xs"><span class="counter-cart"><?=$arResult['NUM_PRODUCTS']?></span></div><div class="cart-mobil hidden-lg hidden-md"><span class="counter-cart-mobil"><?=$arResult['NUM_PRODUCTS']?></span></div></a>

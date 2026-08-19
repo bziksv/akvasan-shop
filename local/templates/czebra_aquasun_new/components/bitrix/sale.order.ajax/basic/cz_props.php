@@ -7,20 +7,27 @@ foreach ($arResult["ORDER_PROP"]["USER_PROPS_Y"] as $arProperties):
 ?>
 <li>
     <?
-    //print_r($arProperties);
     $phone_tag = "";
+    $inputType = "text";
+    $emailAttrs = "";
     if ($arProperties["REQUIRED"] == "Y"  && $arProperties["IS_EMAIL"] == 'Y') {
         $validate = 'data-cz-validated-type="email" data-cz-validated-group="group_order" data-cz-validated-msg="* Необходимо заполнить поле '.$arProperties["NAME"].'"';
+        $inputType = "email";
+        $emailAttrs = 'autocomplete="email" data-prime-alerts-email="1"';
     } elseif($arProperties["REQUIRED"] == "Y") {
         $validate = 'data-cz-validated-type="data" data-cz-validated-group="group_order" data-cz-validated-msg="* Необходимо заполнить поле '.$arProperties["NAME"].'"';
     } else {
         $validate = '';
     }
+    if ($arProperties["IS_EMAIL"] == 'Y' && $inputType !== 'email') {
+        $inputType = "email";
+        $emailAttrs = 'autocomplete="email" data-prime-alerts-email="1"';
+    }
     if ($arProperties["IS_PHONE"] == 'Y' ) {
         $phone_tag = "data-cz-telefon='Y'";
     }
     ?>
-    <input placeholder="<?=$arProperties["NAME"]?>" class="itext" type="text" <?=$phone_tag?> value="<?=$arProperties["VALUE"]?>" name="<?=$arProperties["FIELD_NAME"]?>" id="<?=$arProperties["FIELD_NAME"]?>" <?=$validate?>>
+    <input placeholder="<?=$arProperties["NAME"]?>" class="itext" type="<?=$inputType?>" <?=$emailAttrs?> <?=$phone_tag?> value="<?=$arProperties["VALUE"]?>" name="<?=$arProperties["FIELD_NAME"]?>" id="<?=$arProperties["FIELD_NAME"]?>" <?=$validate?>>
 </li>
 <?endforeach;?>
 

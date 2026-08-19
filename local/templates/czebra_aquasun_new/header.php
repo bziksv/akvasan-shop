@@ -167,7 +167,8 @@ $curPage = $APPLICATION->GetCurPage(true);?>
                             "SHOW_NUM_PRODUCTS" => "Y",
                             "SHOW_PERSONAL_LINK" => "N",
                             "SHOW_PRODUCTS" => "N",
-                            "SHOW_TOTAL_PRICE" => "N"
+                            "SHOW_TOTAL_PRICE" => "N",
+                            "COMPOSITE_FRAME_MODE" => "N"
                         )
                     );?>
 
@@ -236,7 +237,8 @@ $curPage = $APPLICATION->GetCurPage(true);?>
                             "SHOW_NUM_PRODUCTS" => "Y",
                             "SHOW_PERSONAL_LINK" => "N",
                             "SHOW_PRODUCTS" => "N",
-                            "SHOW_TOTAL_PRICE" => "N"
+                            "SHOW_TOTAL_PRICE" => "N",
+                            "COMPOSITE_FRAME_MODE" => "N"
                         )
                     );?>
 

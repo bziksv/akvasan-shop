@@ -47,7 +47,9 @@
     list-style: none;
 }
 
-.cart-info ul li input[type='text']{
+.cart-info ul li input[type='text'],
+.cart-info ul li input[type='email'],
+.cart-info ul li input[type='tel']{
     width: 100%;
     height: 35px;
     padding-left: 10px;
@@ -56,11 +58,26 @@
     border-color: rgb(206, 206, 206);
     border-image: initial;
     border-radius: 2px;
-    margin-bottom: 8px;
+    margin-bottom: 0;
     outline: none;
+    box-sizing: border-box;
 }
-.cart-info div.cz-wrap-error p.cz-input-error{
-    top: -20px;
+.cart-info .cz-wrap-error {
+    position: static;
+    margin: 6px 0 12px;
+}
+.cart-info div.cz-wrap-error p.cz-input-error,
+.cart-info .cz-wrap-error p.cz-input-error {
+    position: static;
+    top: auto;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.45;
+    font-style: normal;
+    color: #e53935;
+}
+.cart-info ul li input.cz-error {
+    border-color: #f96f7f;
 }
 .workarea-text .cart-info p{
     margin-top: 8px;

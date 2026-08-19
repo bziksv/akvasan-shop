@@ -18,14 +18,14 @@ $request = Application::getInstance()->getContext()->getRequest();?>
 
 <?$APPLICATION->IncludeComponent(
     "bitrix:form.result.new",
-    "",
+    "callback",
     Array(
         "CACHE_TIME" => "3600",
-        "CACHE_TYPE" => "A",
+        "CACHE_TYPE" => "N",
         "CHAIN_ITEM_LINK" => "",
         "CHAIN_ITEM_TEXT" => "",
         "EDIT_URL" => "",
-        "IGNORE_CUSTOM_TEMPLATE" => "N",
+        "IGNORE_CUSTOM_TEMPLATE" => "Y",
         "LIST_URL" => "",
         "SEF_MODE" => "N",
         "SUCCESS_URL" => $request["URL_BACK"],

@@ -19,6 +19,10 @@ bitrix/license_key.php
 
 .htaccess
 
+# Импорт/дамп (не для git)
+1.xml
+1_files/
+
 yandex_*
 google*
 mailru-*

@@ -58,11 +58,30 @@
         }
     }
 
+    function errorContainer(e) {
+        var field = e.closest('.auth-form__field');
+        if (field) {
+            return field;
+        }
+        var consent = e.closest('.order-consent');
+        if (consent) {
+            return consent;
+        }
+        return null;
+    }
+
     //Выдача сообщения после элемента "e" об ошибке с текстом "m"
     function showMsgError(e,m) {
         clearError(e);
         addClass(e,'cz-error');
-        e.insertAdjacentHTML('afterend','<div class="cz-wrap-error"><p class="cz-input-error">'+m+'</p></div>');
+        var html = '<div class="cz-wrap-error"><p class="cz-input-error">'+m+'</p></div>';
+        var container = errorContainer(e);
+        if (container) {
+            container.insertAdjacentHTML('beforeend', html);
+        }
+        else {
+            e.insertAdjacentHTML('afterend', html);
+        }
     }
 
     //Удаления сообщения об ошибке у элемента "e"
@@ -72,10 +91,27 @@
 
     function clearError(e) {
         removeClass(e,'cz-error');
+        var container = errorContainer(e);
+        if (container) {
+            var wrap = container.querySelector(':scope > .cz-wrap-error');
+            if (wrap && wrap.parentNode) {
+                wrap.parentNode.removeChild(wrap);
+            }
+            return;
+        }
         var i = e.nextSibling;
         if (i != null && i.className=="cz-wrap-error") {
             i && i.parentNode && i.parentNode.removeChild(i);
         }
+    }
+
+    function bindGroup(group) {
+        allElements[group] = document.querySelectorAll('[data-cz-validated-group="'+group+'"]');
+
+        forEach.call(allElements[group], function(item) {
+            item.addEventListener("keyup", clearFieldFromMsgError);
+            item.addEventListener("change", clearFieldFromMsgError);
+        });
     }
 
     function testFields(code) {
@@ -95,6 +131,15 @@
                 case 'email':
                 {
                     if(!testEmail(item.value))
+                    {
+                        showMsgError(item,item.getAttribute("data-cz-validated-msg"));
+                        result = false;
+                    }
+                    break;
+                }
+                case 'phone':
+                {
+                    if(!/^\+7-\d{3}-\d{3}-\d{2}-\d{2}$/.test(item.value))
                     {
                         showMsgError(item,item.getAttribute("data-cz-validated-msg"));
                         result = false;
@@ -124,21 +169,20 @@
     return {
         run: function(group)
         {
-            allElements[group] = document.querySelectorAll('[data-cz-validated-group="'+group+'"]');
-
-            forEach.call(allElements[group], function(item) {
-                item.addEventListener("keyup",clearFieldFromMsgError);
-                item.addEventListener("change",clearFieldFromMsgError);
-            });
-
+            bindGroup(group);
             return testFields(group);
         },
-        runBtn: function(btn, group) {  
+        bind: function(group)
+        {
+            bindGroup(group);
+            return true;
+        },
+        runBtn: function(btn, group) {
             allElements[btn] = document.querySelectorAll('[data-cz-validated-group="' + group + '"]');
-            
+
             forEach.call(allElements[btn], function(item) {
-                item.addEventListener("keyup",clearFieldFromMsgError);
-                item.addEventListener("change",clearFieldFromMsgError);
+                item.addEventListener("keyup", clearFieldFromMsgError);
+                item.addEventListener("change", clearFieldFromMsgError);
             });
 
             document.getElementById(btn).addEventListener("click", testFieldsBtn);

@@ -15,7 +15,9 @@ if ($USER->IsAuthorized()):?>
     <p><a href="<?=SITE_DIR?>">Вернуться на главную страницу</a></p>
 </div>
 <?else:?>
-<div id="auth"><div class="preload"></div></div>
+<div class="auth-page">
+    <div id="auth"><div class="preload"></div></div>
+</div>
 <?
     $url = explode("?", $APPLICATION->GetCurPageParam());
     $param = (count($url) == 2) ? $url[1]: "";
@@ -29,11 +31,16 @@ if ($USER->IsAuthorized()):?>
             <?if($_REQUEST['forgot_password'] == 'yes'):?>
                 cz_validated.runBtn('send-passw', 'group_forgpassw');
             <?elseif($_REQUEST['register'] == 'yes'):?>
-
+                cz_validated.bind('group_registration');
             <?else:?>
                 cz_validated.runBtn('log', 'group_auth');
             <?endif?>
             aliveFomrs();
+            if (typeof window.primeAlertsCheckRegistrationEmail === 'function') {
+                setTimeout(function () {
+                    window.primeAlertsCheckRegistrationEmail();
+                }, 50);
+            }
         });
 
     });
@@ -51,6 +58,11 @@ if ($USER->IsAuthorized()):?>
                     } else {
                         $('#auth').html(data).promise().done(function(){
                             aliveFomrs();
+                            if (typeof window.primeAlertsCheckRegistrationEmail === 'function') {
+                                setTimeout(function () {
+                                    window.primeAlertsCheckRegistrationEmail();
+                                }, 50);
+                            }
                         });
                     }
                 }
@@ -58,6 +70,16 @@ if ($USER->IsAuthorized()):?>
             return false;
         });
         $('#auth form[name="bform"]').submit(function(){
+            var $form = $(this);
+            if ($form.find('input[name="TYPE"][value="REGISTRATION"]').length) {
+                if (cz_validated.run('group_registration') === false) {
+                    var $firstError = $('#auth .cz-error').first();
+                    if ($firstError.length) {
+                        $firstError.focus();
+                    }
+                    return false;
+                }
+            }
             $.ajax({
                 url: $(this).attr('action'),
                 type: $(this).attr('method'),
@@ -69,13 +91,22 @@ if ($USER->IsAuthorized()):?>
                     } else {
                         $('#auth').html(data).promise().done(function(){
                             aliveFomrs();
+                            if (typeof window.primeAlertsCheckRegistrationEmail === 'function') {
+                                setTimeout(function () {
+                                    window.primeAlertsCheckRegistrationEmail();
+                                }, 50);
+                            }
                         });
                     }
                 }
             });
             return false;
         });
-        $("[name='REGISTER[PERSONAL_PHONE]']").mask("+7(999)999-99-99");
+        $("[name='PERSONAL_PHONE']").mask("+7-999-999-99-99");
+
+        if ($('#auth form[name="bform"] input[name="TYPE"][value="REGISTRATION"]').length) {
+            cz_validated.bind('group_registration');
+        }
 
         $("[name='regform'] .wrap-btn-reg-form .form-btn").click(function(){
             $("[name='regform'] input[name='REGISTER[LOGIN]']").val($("[name='regform'] input[name='REGISTER[EMAIL]']").val());

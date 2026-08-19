@@ -43,15 +43,10 @@ function btnBuyClick() {
             $.ajax({
                 url: "/local/ajax/basket/?action=add&id=" + id,
                 cache: false,
-                success: function (data) {
-                    $("#basket-in-header").html(data);
-                    $("#basket-in-panel").load("/local/ajax/basketline/");
-
-                    $(elem).attr("data-cz-basket", "yes");
-                    $(elem).text("уже в корзине");
-                    $(elem).addClass("in-basket");
-                    $(elem).removeClass('cart-icon');
-                    $(elem).addClass('no-padding-cart');
+                success: function () {
+                    if (typeof window.refreshBasketFromList === 'function') {
+                        window.refreshBasketFromList();
+                    }
                 }
             });
         }

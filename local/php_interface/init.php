@@ -102,6 +102,22 @@ function DoNotAdd(&$arFields) {
     }
 }
 
+function akvasanRegistrationPhone(&$arFields) {
+    if (($_POST['TYPE'] ?? '') !== 'REGISTRATION') {
+        return true;
+    }
+
+    $phone = trim((string)($_POST['PERSONAL_PHONE'] ?? ''));
+    if ($phone === '' || !preg_match('/^\+7-\d{3}-\d{3}-\d{2}-\d{2}$/', $phone)) {
+        global $APPLICATION;
+        $APPLICATION->ThrowException('Укажите телефон в формате +7-___-___-__-__');
+        return false;
+    }
+
+    $arFields['PERSONAL_PHONE'] = $phone;
+    return true;
+}
+
 // ====================================================================
 // КЛАСС SectionsInit
 // ====================================================================
@@ -172,6 +188,7 @@ class SectionsInit {
 if (function_exists('AddEventHandler')) {
     AddEventHandler("iblock", "OnBeforeIBlockElementUpdate", "DoNotUpdate");
     AddEventHandler("iblock", "OnBeforeIBlockElementAdd", "DoNotAdd");
+    AddEventHandler("main", "OnBeforeUserRegister", "akvasanRegistrationPhone");
     php_log("✓ Import event handlers registered");
 }
 
