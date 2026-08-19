@@ -1,0 +1,39 @@
+.slide-menu {
+    width: 100%;
+    background-color: #f7f8f9;
+}
+
+.slide-menu, .slide-menu a {
+    color: #777
+}
+
+.slide-menu a {
+    padding: .9rem 1.5rem;
+    border-bottom: 1px solid #eee;
+    text-decoration: none
+}
+
+.slide-menu .controls {
+    display: flex;
+}
+
+.slide-menu .btn {
+    padding: .75rem 1.5rem;
+    flex: 1 0 auto;
+    color: #fff;
+    background-color: #6dbaf2;
+    text-transform: uppercase;
+    border-radius: unset;
+}
+
+.slide-menu .btn:first-of-type {
+    text-align: left
+}
+
+.slide-menu .btn:last-of-type {
+    text-align: right
+}
+
+.slide-menu .slide-menu__backlink {
+    text-transform: uppercase
+}

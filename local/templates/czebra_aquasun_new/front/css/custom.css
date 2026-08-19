@@ -1,0 +1,87 @@
+
+.link-mobile-filter {
+    display: none;
+    color: #777;
+}
+
+.container-sorting .link-mobile-filter a {
+    padding-left: 20px;
+    position: relative;
+    color: #777;
+}
+
+.container-sorting .link-mobile-filter span {
+    display: block;
+    background: url(/local/templates/czebra_aquasun_new/front/css/../img/sprites.png) no-repeat;
+    background-position: -155px -51px;
+    width: 16px;
+    height: 14px;
+    position: absolute;
+    top: 2px;
+    left: 0;
+}
+
+.container-pagination li:hover {
+    background: #e38f322e;
+}
+
+.quick-link-button-wrapper {
+    margin-top: 5px;
+}
+
+.quick-link.show-all-tags {
+    height: 80px;
+}
+
+.quick-link-button-wrapper {
+
+}
+
+.quick-link-button {
+    display: inline-block;
+    padding: 5px 15px;
+    color: #fff!important;
+    background: #e38f32;
+    border-radius: 17px;
+    box-shadow: 0 5px 12px rgba(225,38,28,.15);
+    text-align: center;
+    text-decoration: none;
+}
+
+.articles .container-novelty {
+    position: fixed;
+    top: 22.5%;
+    right: 1%;
+    width: 364px;
+}
+
+@media (max-width:991px){
+    .container-filter {
+        opacity: 0;
+        height: 1px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container-filter .left-filter,
+    .container-filter .center-filter,
+    .container-filter .right-filter,
+    .container-filter .block-filter .workarea-filter,
+    .container-filter .container-filter-price
+    {
+        padding: 10px!important;
+    }
+
+    .link-mobile-filter {
+        display: inline-block;
+    }
+
+    .img-product {
+        width: 100%;
+    }
+
+    .articles .container-novelty {
+        position: unset;
+        width: 100%;
+    }
+}

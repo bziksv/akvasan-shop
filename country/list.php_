@@ -1,0 +1,124 @@
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+$APPLICATION->SetTitle("Каталог товаров - бренд");?>
+
+<?
+//$iblock = 5;
+//выбираем все значения из свойства  BREND_ инфоблок 5 
+//$propertyEnums = CIBlockPropertyEnum::GetList(Array("value" => "ASC", "sort" => "ASC"), Array("IBLOCK_ID" => $iblock, "CODE" => "BREND%"));
+//$firstChar[]
+//составляем из них цепочку - http://joxi.ru/DmBv5KETJllwjm  в начале цепочки возможно стоит добавить "все"
+
+//выводим все бренды с картинками
+//по картинке нужно придумать правило формирования в папке /upload/brands/
+
+//пишим скрипт, который будет сортировать бренды
+// для этого у каждого items добавляем data-search-char="A"
+//при нажатиии в элементе цепочки скрываем все item, а потом в цикле перебираем все items, которые равны выбранной букве делаем видимыми
+
+?>
+
+<?
+
+$cache = new CPHPCache();
+$cache_time = 36000;
+$cache_id = 'listBrandCzebra';
+$cache_path = '/listBrandCzebra/';
+if ($cache_time > 0 && $cache->InitCache($cache_time, $cache_id, $cache_path)) {
+    $res = $cache->GetVars();
+    if (is_array($res["arFirstCharCountry"]) && (count($res["arFirstCharCountry"]) > 0)) {
+        $arFirstChar = $res["arFirstCharCountry"];
+    }
+    if (is_array($res["listBrandCountry"]) && (count($res["listBrandCountry"]) > 0)) {
+        $listBrand = $res["listBrandCountry"];
+    }
+}
+
+if (!is_array($listBrand) && !is_array($arFirstChar)) {
+    $iblock = 5;
+    $propertyEnums = CIBlockPropertyEnum::GetList(Array("value" => "ASC", "sort" => "ASC"), Array("IBLOCK_ID" => $iblock, "CODE" => "STRANA%"));
+    while($enum_fields = $propertyEnums->GetNext()) {
+        $count = CIBlockElement::GetList([], ["IBLOCK" => $iblock, "PROPERTY_STRANA" => $enum_fields["ID"]], false, ["nPageSize"=>1], ["ID", "IBLOCK"]);
+        if ($count->SelectedRowsCount() > 0) {
+            $firstChar = ToUpper(substr($enum_fields["VALUE"], 0, 1));
+            if (is_numeric($firstChar)) {
+                $firstChar = "0-9";
+            }
+            $arFirstChar[] = $firstChar;
+            $listBrand[] = [
+                "NAME" => $enum_fields["VALUE"],
+                "CODE" => Cutil::translit($enum_fields["VALUE"],"ru",array()),
+                "FIRST_CHAR" => $firstChar
+            ];
+        }
+    }
+    $arFirstChar = array_unique($arFirstChar);
+
+    if ($cache_time > 0) {
+        $cache->StartDataCache($cache_time, $cache_id, $cache_path);
+        $cache->EndDataCache(array(
+            "arFirstCharCountry" => $arFirstChar,
+            "listBrandCountry" => $listBrand,
+        ));
+    }
+}
+?>
+
+<div class="wrapp-filter-name-string">
+    <div class="container">
+        <div class="item-filter-name-string">
+            <a id = "all-brands" class="active-filter-string" href="#">ВСЕ</a>
+        </div>
+        <?foreach($arFirstChar as $val):?>
+            <div class="item-filter-name-string">
+                <a href="#"><?=$val?></a>
+            </div>
+        <?endforeach;?>
+    </div>
+</div>
+
+<div class="wrapp-brand">
+    <div class="container">
+        <div class="block-brand-item">
+        <?foreach($listBrand as $key => $arItem):?>
+            <?if($key % 6 == 0):?>
+                </div><div class="block-brand-item">
+            <?endif;?>
+            <div class="item-brand-card" data-search-char="<?=$arItem["FIRST_CHAR"]?>">
+                <a href="/country/<?=$arItem["CODE"]?>/">
+                    <span class="card-img-brand">
+                        <?
+                        $file = "/upload/template_new/flag_" . Cutil::translit($arItem["NAME"],"ru",array()) . ".png";
+                        if (file_exists($_SERVER["DOCUMENT_ROOT"].$file)) : 
+                        ?> 
+                        <img src="<?=$file?>" alt="<?=$arItem["NAME"]?>">
+                        <?endif?>
+                    </span>
+                    <span class="name-brand"><?=$arItem["NAME"]?></span>
+                </a>
+            </div>
+        <?endforeach?>
+    </div>
+</div>
+
+
+
+<script>
+
+    $('.item-filter-name-string a').click(function(){
+        $('.item-filter-name-string a').removeClass('active-filter-string');
+        $(this).addClass('active-filter-string');
+        $('.item-brand-card').hide();
+        $('.item-brand-card[data-search-char="'+ $(this).text()+'"]').show();
+        return false;
+    });
+
+    $('#all-brands').click(function(){
+        $('.item-brand-card').show();
+    });
+
+</script>
+
+
+
+
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

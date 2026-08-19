@@ -1,0 +1,31 @@
+<?
+define("NO_KEEP_STATISTIC", true);
+define("NOT_CHECK_PERMISSIONS", true);
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+
+use \Bitrix\Main\Application;
+use \Bitrix\Main\Loader;
+
+$request = Application::getInstance()->getContext()->getRequest();
+
+if(!$request->get("ACTION")) return false;
+    
+if (Loader::IncludeModule("sale") && Loader::IncludeModule("catalog"))
+{
+    $basketID = 0;
+    $arFields = array();
+    if($request->get("ACTION") == "DELAY"){
+        if(!$request->get("ID")) return false;
+        $basketID = Add2BasketByProductID($request->get("ID"), 1);
+        $arFields = array("DELAY" => "Y", "LID" => "s1");
+    }
+    elseif($request->get("ACTION") == "CHANGE_QUAN"){
+        if(!$request->get("basketID") || !$request->get("QUANTITY")) return false;
+        $basketID = $request->get("basketID");
+        $arFields = array("QUANTITY" => $request->get("QUANTITY"));
+    }
+
+    CSaleBasket::Update($basketID, $arFields);
+}
+
+?>

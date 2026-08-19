@@ -1,0 +1,2 @@
+<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
+<a href="http://www.czebra.ru/" class="pagebottomtext">Разработка сайта - "Цветная зебра" (BFS - <?=\Czebra\Base\Consts::CZ_SITE_BUILD?>)</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="pagebottomtext" href="mailto:czebra@czebra.ru">Техподдержка</a>

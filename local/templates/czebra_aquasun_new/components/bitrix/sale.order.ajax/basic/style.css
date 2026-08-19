@@ -1,0 +1,99 @@
+.bx-sls .dropdown-block{
+    height: 38px;
+    width: 416px;
+    border: 1px solid #909090;
+}
+@media (max-width:768px){
+    .bx-sls .dropdown-block{
+        width: 100%;
+    }
+}
+#hidepanel{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-image: url(images/ajax-loader.gif);
+    background-color: #000;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    opacity: 0.7;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+}
+#pay input[type=submit]{
+    border: none;
+    height: 33px;
+    line-height: 30px;
+    background: #ff9702;
+    width: auto;
+    padding: 3px 35px 0;
+    font-size: 18px;
+    transform: skew(-8deg);
+    display: inline-block;
+    color: #fefefe;
+}
+.ci-title{
+    margin: 25px 0 15px 0;
+    font-size: 24px;
+}
+.workarea-text .cart-info ul{
+    margin: 0;
+    padding: 0;
+}
+.cart-info ul li{
+    list-style: none;
+}
+
+.cart-info ul li input[type='text']{
+    width: 100%;
+    height: 35px;
+    padding-left: 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(206, 206, 206);
+    border-image: initial;
+    border-radius: 2px;
+    margin-bottom: 8px;
+    outline: none;
+}
+.cart-info div.cz-wrap-error p.cz-input-error{
+    top: -20px;
+}
+.workarea-text .cart-info p{
+    margin-top: 8px;
+}
+.is-more-btn {
+    display: block;
+    width: 240px;
+    height: 40px;
+    font-family: "Roboto-Bold";
+    font-size: 16px;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    line-height: 40px;
+    text-align: center;
+    background: #FF8C00;
+    border-radius: 10px 0 10px 0;
+    border: none;
+    padding: 0;
+}
+.is-more-btn:hover, .is-more-btn:focus {
+    border: 1px solid #FF8C00;
+    background-color: #FFFFFF;
+    color:#FF8C00;
+    padding: 0;
+    text-decoration: none;
+}
+.workarea-text .cart-all p{
+    margin-bottom: 35px;
+    font-size: 28px;
+}
+
+.workarea-text .cart-all p.pp{
+    font-size: 12px;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,15 @@
+.megaprice .add-to-cart{
+    margin-left: 20px;
+    display: inline-block;
+    width: 168px;
+    height: 34px;
+    text-align: center;
+    font-family: "Roboto-Medium";
+    font-size: 14px;
+    color: #253746;
+    border: 2px solid #e38f32;
+    border-radius: 17px;
+    line-height: 32px;
+    text-decoration: none;
+    position: relative;
+}

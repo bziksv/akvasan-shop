@@ -1,0 +1,87 @@
+<?php
+namespace Czebra\BFS;
+
+use Bitrix\Main\Loader;
+
+class Basket
+{
+    public function Add($param)
+    {
+        if (Loader::IncludeModule("sale") && Loader::IncludeModule("catalog")) {
+
+            if (isset($param["PRODUCT_ID"])
+                && !empty($param["PRODUCT_ID"])
+                && ctype_digit($param["PRODUCT_ID"])
+            ) {
+                $productID = $param["PRODUCT_ID"];
+
+                $quanity = 1;
+                if (isset($param["QUANITY"])
+                    && !empty($param["QUANITY"])
+                    && is_numeric($param["QUANITY"])
+                ) {
+                    $quanity = $param["QUANITY"];
+                }
+
+                $ID = \Add2BasketByProductID($productID, $quanity);
+
+                $result = array(
+                    "STATUS" => "ОК",
+                    "ID" => $ID,
+                );
+            } else {
+                $result = array(
+                    "STATUS" => "ERROR",
+                    "ERROR_TEXT" => "Czebra\BFS\Basket\add - Problem with ID",
+                );
+            }
+        } else {
+            $result = array(
+                "STATUS" => "ERROR",
+                "ERROR_TEXT" => "Czebra\BFS\Basket\add - no modules 'sale' and 'catalog'",
+            );
+        }
+
+        return json_encode($result);
+    }
+
+    public function getList()
+    {
+        if (Loader::includeModule("sale")) {
+            $result = array("STATUS" => "ОК");
+
+            $dbBasketItems = \CSaleBasket::GetList(
+                array(),
+                array(
+                    "FUSER_ID" => \CSaleBasket::GetBasketUserID(),
+                    "LID" => SITE_ID,
+                    "ORDER_ID" => "NULL"
+                ),
+                false,
+                false,
+                array("ID", "PRODUCT_ID", "DELAY")
+            );
+            while ($arItems = $dbBasketItems->Fetch()) {
+                $result["basket"][] = $arItems["PRODUCT_ID"];
+                if ($arItems["DELAY"] == "Y") {
+                    $result["delay"][] = $arItems["PRODUCT_ID"];
+                }
+            }
+
+            //$arCompare = array();
+            //foreach($_SESSION["CATALOG_COMPARE_LIST"][8]["ITEMS"] as $key=>$value){
+            //    $arCompare[] = $key;
+            //}
+
+
+        } else {
+            $result = array(
+                "STATUS" => "ERROR",
+                "ERROR_TEXT" => "Czebra\BFS\Basket\add - no modules 'sale'",
+            );
+        }
+
+        return json_encode($result);
+    }
+
+}

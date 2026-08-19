@@ -1,0 +1,44 @@
+.sotbit-seometa-tags-common-wrapper {
+    padding: 24px;
+    background: #F8F9FA;
+    overflow: hidden;
+    position: relative;
+}
+
+.sotbit-seometa-tags-wrapper {
+    transition: height 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+.sotbit-seometa-tags-wrapper.expanded {
+    transition: height 0.5s ease-in-out;
+}
+
+.sotbit-seometa-tags-wrapper-category {
+    overflow: hidden;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.sotbit-seometa-tags-padding {
+    padding-right: 8px;
+    margin-bottom: 8px;
+}
+
+.hide-tag {
+    display: none;
+}
+
+.sotbit-seometa-tag-link {
+    text-decoration: underline;
+}
+
+.sotbit-seometa-btn-more {
+    margin-top: 16px;
+    display: none;
+}
+
+.sotbit-seometa-btn-more.show-btn {
+    display: block;
+}

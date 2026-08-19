@@ -1,0 +1,435 @@
+<?php
+
+use Intaro\RetailCrm\Component\ConfigProvider;
+use Intaro\RetailCrm\Component\Constants;
+use RetailCrm\ApiClient;
+
+/** @var $APPLICATION */
+
+IncludeModuleLangFile(__FILE__);
+
+$api_host = COption::GetOptionString(Constants::MODULE_ID, Constants::CRM_API_HOST_OPTION, 0);
+$api_key = COption::GetOptionString(Constants::MODULE_ID, Constants::CRM_API_KEY_OPTION, 0);
+$arResult['arSites'] = RCrmActions::getSitesList();
+
+$RETAIL_CRM_API = new ApiClient($api_host, $api_key);
+COption::SetOptionString(Constants::MODULE_ID, Constants::CRM_API_HOST_OPTION, $api_host);
+COption::SetOptionString(Constants::MODULE_ID, Constants::CRM_API_KEY_OPTION, $api_key);
+
+$availableSites = RetailcrmConfigProvider::getSitesList();
+
+if (!empty($availableSites)) {
+    $availableSites = array_flip($availableSites);
+} else {
+    $site = RetailcrmConfigProvider::getSitesAvailable();
+    $availableSites[$site] = $site;
+}
+
+if (count($arResult['arSites']) === 1) {
+    COption::SetOptionString(Constants::MODULE_ID, Constants::CRM_SITES_LIST, serialize([]));
+}
+
+if (!isset($arResult['PAYMENT'])) {
+    $arResult['PAYMENT'] = unserialize(COption::GetOptionString(Constants::MODULE_ID, Constants::CRM_PAYMENT, 0));
+}
+
+if (!isset($arResult['ORDER_TYPES'])) {
+    $arResult['ORDER_TYPES'] = unserialize(COption::GetOptionString(Constants::MODULE_ID, Constants::CRM_ORDER_TYPES_ARR, 0));
+}
+
+if (!isset($arResult['paymentTypesList'])) {
+    $arResult['bitrixPaymentTypesList'] = RCrmActions::PaymentList();
+    $arResult['paymentTypesList'] = RetailCrmService::getAvailableTypes(
+        $availableSites,
+        $RETAIL_CRM_API->paymentTypesList()->paymentTypes
+    );
+    $arResult['PAYMENT_TYPES'] = unserialize(COption::GetOptionString(Constants::MODULE_ID, Constants::CRM_PAYMENT_TYPES, 0));
+}
+
+if (!isset($arResult['bitrixStatusesList'])) {
+    $arResult['bitrixStatusesList'] = RCrmActions::StatusesList();
+    $arResult['paymentList'] = $RETAIL_CRM_API->statusesList()->statuses;
+    $arResult['paymentGroupList'] = $RETAIL_CRM_API->statusGroupsList()->statusGroups;
+}
+
+if (!isset($arResult['orderTypesList'])) {
+    $arResult['bitrixOrderTypesList'] = RCrmActions::OrderTypesList($arResult['arSites']);
+    $arResult['orderTypesList'] = $RETAIL_CRM_API->orderTypesList()->orderTypes;
+}
+
+if (!isset($arResult['paymentStatusesList'])) {
+    $arResult['paymentStatusesList'] = $RETAIL_CRM_API->paymentStatusesList()->paymentStatuses;
+    $arResult['PAYMENT_STATUSES'] = unserialize(COption::GetOptionString(Constants::MODULE_ID, Constants::CRM_PAYMENT_STATUSES, 0));
+}
+
+if (!isset($arResult['bitrixDeliveryTypesList'])) {
+    $arResult['bitrixDeliveryTypesList'] = RCrmActions::DeliveryList();
+    $arResult['deliveryTypesList'] = RetailCrmService::getAvailableTypes(
+        $availableSites,
+        $RETAIL_CRM_API->deliveryTypesList()->deliveryTypes
+    );
+    $arResult['DELIVERY_TYPES'] = unserialize(COption::GetOptionString(Constants::MODULE_ID, Constants::CRM_DELIVERY_TYPES_ARR, 0));
+}
+
+//bitrix pyament Y/N
+$arResult['bitrixPaymentList'][0]['NAME'] = GetMessage('PAYMENT_Y');
+$arResult['bitrixPaymentList'][0]['ID'] = 'Y';
+$arResult['bitrixPaymentList'][1]['NAME'] = GetMessage('PAYMENT_N');
+$arResult['bitrixPaymentList'][1]['ID'] = 'N';
+
+if (isset($arResult['ORDER_TYPES'])) {
+    $defaultOrderTypes = $arResult['ORDER_TYPES'];
+} else {
+    $defaultOrderTypes = [
+        1 => 'eshop-individual',
+        2 => 'eshop-legal',
+    ];
+}
+
+if (isset($arResult['DELIVERY_TYPES'])) {
+    $defaultDelivTypes = $arResult['DELIVERY_TYPES'];
+} else {
+    $defaultDelivTypes = [
+        1 => 'courier',
+        2 => 'self-delivery',
+    ];
+}
+
+if (isset($arResult['PAYMENT_TYPES'])) {
+    $defaultPayTypes = $arResult['PAYMENT_TYPES'];
+} else {
+    $defaultPayTypes = [
+        1 => 'cash',
+        4 => 'e-money',
+        5 => 'bank-card',
+        9 => 'bank-transfer',
+    ];
+}
+
+if (isset($arResult['PAYMENT_STATUSES'])) {
+    $defaultPayStatuses = $arResult['PAYMENT_STATUSES'];
+} else {
+    $defaultPayStatuses = [
+        'N' => 'new',
+        'P' => 'prepayed',
+        'F' => 'complete',
+    ];
+}
+
+if (isset($arResult['PAYMENT'])) {
+    $defaultPayment = $arResult['PAYMENT'];
+} else {
+    $defaultPayment = [
+        'Y' => 'paid',
+        'N' => 'not-paid',
+    ];
+}
+
+$orderMethods = [];
+$getOrderMethods = $RETAIL_CRM_API->orderMethodsList();
+
+if ($getOrderMethods !== null && $getOrderMethods->isSuccessful()) {
+    foreach ($getOrderMethods->orderMethods as $method) {
+        if (!$method['active']) {
+            continue;
+        }
+
+        $orderMethods[$method['code']] = $method['name'];
+    }
+}
+
+$arResult['orderMethods'] = $orderMethods;
+$crmOrderMethods = ConfigProvider::getCrmOrderMethods();
+$useCrmOrderMethods = ConfigProvider::useCrmOrderMethods();
+?>
+
+<style type="text/css">
+    input[name="update"] {
+        right:2px;
+        position: absolute !important;
+        top:3px;
+    }
+</style>
+
+<?php CJSCore::Init(['jquery']);?>
+
+<script type="text/javascript">
+    function switchCrmOrderMethods() {
+        $('#crm_order_methods').toggle(500);
+    }
+
+    $(document).ready(function() {
+        $('input[name="update"]').on('click', function() {
+            $('input[name="step"]').val(2);
+            BX.showWait();
+            var updButton = this;
+            // hide next step button
+            $(updButton).css('opacity', '0.5').attr('disabled', 'disabled');
+
+            var handlerUrl = $(this).parents('form').attr('action');
+            var data = $(this).parents('form').serialize() + '&ajax=1';
+
+            $.ajax({
+                type: 'POST',
+                url: handlerUrl,
+                data: data,
+                dataType: 'json',
+                success: function(response) {
+                    if(response.success) {
+                        $.each(response.result, function(i,item){
+                            $('select[name="' + i + '"]').replaceWith(item);
+                        });
+                    }
+
+                    BX.closeWait();
+                    $(updButton).css('opacity', '1').removeAttr('disabled');
+                    $('input[name="step"]').val(3);
+
+                    if(!response.success)
+                        alert('<?php echo GetMessage('MESS_5'); ?>');
+                },
+                error: function () {
+                    BX.closeWait();
+                    $(updButton).css('opacity', '1').removeAttr('disabled');
+                    $('input[name="step"]').val(3);
+
+                    alert('<?php echo GetMessage('MESS_5'); ?>');
+                }
+            });
+
+            return false;
+        });
+
+        $('input[name="delivery-types-export"]').click(function() {
+            if($(this).val() === 'true')
+                $('tr.delivery-types').hide('slow');
+            else if($(this).val() === 'false')
+                $('tr.delivery-types').show('slow');
+        });
+    });
+</script>
+
+<div class="adm-detail-content-item-block">
+<form action="<?php echo $APPLICATION->GetCurPage() ?>" method="POST">
+    <?php echo bitrix_sessid_post(); ?>
+    <input type="hidden" name="lang" value="<?php echo LANGUAGE_ID ?>">
+    <input type="hidden" name="id" value="intaro.retailcrm">
+    <input type="hidden" name="install" value="Y">
+    <input type="hidden" name="step" value="3">
+
+    <table class="adm-detail-content-table edit-table" id="edit1_edit_table">
+        <tbody>
+            <!--<tr class="heading">
+                <td colspan="2" style="position:relative;">
+                    <b><?php echo GetMessage('STEP_NAME'); ?></b>
+                    <input type="submit" name="update" value="<?php echo GetMessage('UPDATE_CATS'); ?>" class="adm-btn-save">
+                </td>
+            </tr>-->
+            <tr align="center">
+                <td colspan="2"><b><?php echo GetMessage('INFO_1'); ?></b></td>
+            </tr>
+            <tr align="center">
+                <td colspan="2"><?php echo GetMessage('INFO_2') . " " . "<a href='". $api_host ."/admin/statuses' target=_blank>" . GetMessage('URL_1') . "</a>" . " " . 'RetailCRM.'; ?></td>
+            </tr>
+            <tr align="center">
+                <td colspan="2"><?php echo GetMessage('INFO_3'); ?></td>
+            </tr>
+            <tr class="heading">
+                <td colspan="2"><b><?php echo GetMessage('DELIVERY_TYPES_LIST'); ?></b></td>
+            </tr>
+            <tr class="heading">
+                <td width="50%" class="adm-detail-content-cell-l">
+                    <label><input type="radio" name="delivery-types-export" value="true" checked> <?php echo GetMessage('DELIV_TYPES_EXPORT'); ?></label>
+                </td>
+                <td width="50%" class="adm-detail-content-cell-r">
+                    <label><input type="radio" name="delivery-types-export" value="false"> <?php echo GetMessage('DELIV_TYPES_EXPORT_F'); ?></label>
+                </td>
+            </tr>
+            <?php foreach($arResult['bitrixDeliveryTypesList'] as $bitrixDeliveryType): ?>
+            <tr class="delivery-types" style="display: none;">
+                <td width="50%" class="adm-detail-content-cell-l" name="<?php echo $bitrixDeliveryType['ID']; ?>">
+		    <?php echo $bitrixDeliveryType['NAME']; ?>
+                </td>
+                <td width="50%" class="adm-detail-content-cell-r">
+                    <select name="delivery-type-<?php echo $bitrixDeliveryType['ID']; ?>" class="typeselect">
+                        <option value=""></option>
+                        <?php foreach($arResult['deliveryTypesList'] as $deliveryType): ?>
+                            <option value="<?php echo $deliveryType['code']; ?>"
+                                <?php if($defaultDelivTypes[$bitrixDeliveryType['ID']] == $deliveryType['code']) echo 'selected'; ?>>
+                                <?php echo $APPLICATION->ConvertCharset($deliveryType['name'], 'utf-8', SITE_CHARSET); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            <tr class="heading">
+                <td colspan="2"><b><?php echo GetMessage('PAYMENT_TYPES_LIST'); ?></b>
+                    <p><small><?php echo GetMessage('INTEGRATION_PAYMENT_LIST');?></small></p></td>
+            </tr>
+            <?php foreach($arResult['bitrixPaymentTypesList'] as $bitrixPaymentType): ?>
+            <tr>
+                <td width="50%" class="adm-detail-content-cell-l" name="<?php echo $bitrixPaymentType['ID']; ?>">
+                <?php echo $bitrixPaymentType['NAME']; ?>
+                </td>
+                <td width="50%" class="adm-detail-content-cell-r">
+                    <select name="payment-type-<?php echo $bitrixPaymentType['ID']; ?>" class="typeselect">
+                        <option value=""></option>
+                        <?php foreach($arResult['paymentTypesList'] as $paymentType): ?>
+                            <option value="<?php echo $paymentType['code']; ?>"
+                                <?php if($defaultPayTypes[$bitrixPaymentType['ID']] == $paymentType['code']) echo 'selected'; ?>>
+                                <?php
+                                $nameType = isset($paymentType['integrationModule']) ? $APPLICATION->ConvertCharset($paymentType['name'] . GetMessage('INTEGRATIONS'), 'utf-8', SITE_CHARSET) : $APPLICATION->ConvertCharset($paymentType['name'], 'utf-8', SITE_CHARSET);
+                                echo $nameType;?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            <tr class="heading">
+                <td colspan="2"><b><?php echo GetMessage('PAYMENT_STATUS_LIST'); ?></b></td>
+            </tr>
+
+            <? if (empty($arResult['bitrixStatusesList'])) :?>
+                <td colspan="2" class="option-head option-other-top option-other-bottom" style="text-align: center;">
+                    <b><label><?echo GetMessage('STATUS_NOT_SETTINGS');?></label></b>
+                </td>
+            <?else:?>
+                <tr>
+                    <td width="50%"></td>
+                    <td width="50%">
+                        <table width="100%">
+                            <tr>
+                                <td width="50%"></td>
+                                <td width="50%" style="text-align: center;">
+                                    <?php echo GetMessage('CANCELED'); ?>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            <?php endif;?>
+
+            <?php foreach($arResult['bitrixStatusesList'] as $bitrixStatus): ?>
+            <tr>
+                <td width="50%" class="adm-detail-content-cell-l" name="<?php echo $bitrixStatus['ID']; ?>">
+                    <?php echo $bitrixStatus['NAME']; ?>
+                </td>
+                <td width="50%" class="adm-detail-content-cell-r">
+                    <table width="100%">
+                        <tr>
+                            <td width="70%">
+                                <select name="payment-status-<?php echo $bitrixStatus['ID']; ?>" class="typeselect">
+                                    <option value="" selected=""></option>
+                                    <?php foreach($arResult['paymentGroupList'] as $orderStatusGroup): if(!empty($orderStatusGroup['statuses'])) : ?>
+                                        <?php if($orderStatusGroup['active'] === true) : ?>
+                                            <optgroup label="<?php echo $APPLICATION->ConvertCharset($orderStatusGroup['name'], 'utf-8', SITE_CHARSET); ?>">
+                                                <?php foreach($orderStatusGroup['statuses'] as $payment): ?>
+                                                    <?php if(isset($arResult['paymentList'][$payment])): ?>
+                                                        <?php if($arResult['paymentList'][$payment]['active'] === true): ?>
+                                                            <option value="<?php echo $arResult['paymentList'][$payment]['code']; ?>"
+                                                                <?php if ($defaultPayStatuses[$bitrixStatus['ID']] == $arResult['paymentList'][$payment]['code']) echo 'selected'; ?>>
+                                                                <?php echo $APPLICATION->ConvertCharset($arResult['paymentList'][$payment]['name'], 'utf-8', SITE_CHARSET); ?>
+                                                            </option>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?>
+                                            </optgroup>
+                                        <?php endif; ?>
+                                    <?php endif; endforeach; ?>
+                                </select>
+                            </td>
+                            <td width="30%">
+                                <input name="order-cansel-<?php echo $bitrixStatus['ID']; ?>" value="Y" type="checkbox" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            <tr class="heading">
+                <td colspan="2"><b><?php echo GetMessage('PAYMENT_LIST'); ?></b></td>
+            </tr>
+            <?php foreach($arResult['bitrixPaymentList'] as $bitrixPayment): ?>
+            <tr>
+                <td width="50%" class="adm-detail-content-cell-l" name="<?php echo $bitrixPayment['ID']; ?>">
+                    <?php echo $bitrixPayment['NAME']; ?>
+                </td>
+                <td width="50%" class="adm-detail-content-cell-r">
+                    <select name="payment-<?php echo $bitrixPayment['ID']; ?>" class="typeselect">
+                        <option value=""></option>
+                        <?php foreach($arResult['paymentStatusesList'] as $paymentStatus): ?>
+                            <?php if($paymentStatus['active'] === true): ?>
+                                <option value="<?php echo $paymentStatus['code']; ?>"
+                                    <?php if($defaultPayment[$bitrixPayment['ID']] == $paymentStatus['code']) echo 'selected'; ?>>
+                                    <?php echo $APPLICATION->ConvertCharset($paymentStatus['name'], 'utf-8', SITE_CHARSET); ?>
+                                </option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            <tr class="heading">
+                <td colspan="2"><b><?php echo GetMessage('ORDER_TYPES_LIST'); ?></b></td>
+            </tr>
+            <?php foreach($arResult['bitrixOrderTypesList'] as $bitrixOrderType): ?>
+            <tr>
+                <td width="50%" class="adm-detail-content-cell-l" name="<?php echo $bitrixOrderType['ID']; ?>">
+                    <?php echo $bitrixOrderType['NAME']; ?>
+                </td>
+                <td width="50%" class="adm-detail-content-cell-r">
+                    <select name="order-type-<?php echo $bitrixOrderType['ID']; ?>" class="typeselect">
+                        <option value=""></option>
+                        <?php foreach($arResult['orderTypesList'] as $orderType): ?>
+                            <?php if($orderType['active'] === true): ?>
+                                <option value="<?php echo $orderType['code']; ?>"
+                                    <?php if($defaultOrderTypes[$bitrixOrderType['ID']] == $orderType['code']) echo 'selected'; ?>>
+                                    <?php echo $APPLICATION->ConvertCharset($orderType['name'], 'utf-8', SITE_CHARSET); ?>
+                                </option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            <tr class="heading">
+                <td colspan="2"><b><?php echo GetMessage('CRM_ORDER_METHODS'); ?></b></td>
+            </tr>
+
+            <tr>
+                <td colspan="2" style="text-align: center!important;">
+                    <label><input class="addr" type="checkbox" name="use_crm_order_methods" value="Y" onclick="switchCrmOrderMethods();" <?php if ($useCrmOrderMethods === 'Y') {
+                            echo "checked";
+                        } ?>><?php echo GetMessage('CRM_ORDER_METHODS_OPTION'); ?></label>
+                </td>
+            </tr>
+
+            <tr id="crm_order_methods" style="display:<?php echo $useCrmOrderMethods !== 'Y' ? 'none' : '';?>">
+                <td colspan="2" style="text-align: center!important;">
+                    <br><br>
+                    <select multiple size="<?php echo count($arResult['orderMethods']);?>" name="crm_order_methods[]">
+                        <?php foreach ($arResult['orderMethods'] as $key => $name): ?>
+                            <option value="<?php echo $key;?>"<?php if (is_array($crmOrderMethods) && in_array($key, $crmOrderMethods)) {
+                                echo 'selected';
+                            } ?>>
+                                <?php echo $name;?>
+                            </option>
+                        <?php endforeach;?>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+     <div style="padding: 1px 13px 2px; height:28px;">
+        <div align="right" style="float:right; width:50%; position:relative;">
+            <input type="submit" name="inst" value="<?php echo GetMessage("MOD_NEXT_STEP"); ?>" class="adm-btn-save">
+        </div>
+        <div align="left" style="float:right; width:50%; position:relative;">
+            <input type="submit" name="back" value="<?php echo GetMessage("MOD_PREV_STEP"); ?>" class="adm-btn-save">
+        </div>
+    </div>
+</form>
+</div>

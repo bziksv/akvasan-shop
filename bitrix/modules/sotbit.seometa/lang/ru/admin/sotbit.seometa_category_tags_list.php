@@ -1,0 +1,22 @@
+<?php
+$MESS['SEO_META_CT_LIST_INCLUDE'] = 'Модуль sotbit.seometa не установлен';
+$MESS['SEO_META_CT_LIST_TITLE'] = 'Категория тегов';
+$MESS['SEO_META_CT_LIST_DEMO'] = 'Модуль работает в демо-режиме. Приобрести полнофункциональную версию вы можете по адресу: <a href="http://marketplace.1c-bitrix.ru/solutions/sotbit.seometa/" target="_blank">http://marketplace.1c-bitrix.ru/solutions/sotbit.seometa</a>';
+$MESS['SEO_META_CT_LIST_DEMO_END'] = 'Демо-режим закончен. Приобрести полнофункциональную версию вы можете по адресу: <a href="http://marketplace.1c-bitrix.ru/solutions/sotbit.seometa/" target="_blank">http://marketplace.1c-bitrix.ru/solutions/sotbit.seometa</a>';
+$MESS['SEO_META_CT_LIST_NAME'] = 'Наименование';
+$MESS['SEO_META_CT_LIST_DEFAULT'] = 'По умолчанию';
+$MESS['SEO_META_CT_LIST_FILTER_NAME'] = 'Наименование категории тегов';
+$MESS['SEO_META_CT_LIST_ACTIVE'] = 'Активность';
+$MESS['SEO_META_CT_LIST_SORT'] = 'Сортировка';
+$MESS['SEO_META_CT_LIST_DELETE'] = 'Удалить';
+$MESS['SEO_META_CT_LIST_ACTIVATE'] = 'Активировать';
+$MESS['SEO_META_CT_LIST_DEACTIVATE'] = 'Деактивировать';
+$MESS['SEO_META_CT_LIST_EDIT'] = 'Редактировать';
+$MESS['SEO_META_CT_LIST_DELETE'] = 'Удалить';
+$MESS["SEO_META_CT_LIST_DELETE_CONFIRM"] = "Удалить?";
+$MESS["SEO_META_CT_LIST_ADD"] = "Добавить";
+$MESS["SEO_META_CT_LIST_EDIT"] = "Редактировать";
+$MESS["SEO_META_CT_LIST_SAVE_ERROR"] = "Ошибка сохранения";
+$MESS["SEO_META_CT_LIST_DELETE_ERROR"] = "Ошибка удаления";
+$MESS["SEO_META_CT_LIST_DELETE_ERROR_WITH_DEFAULT_CAT"] = "Ошибка удаления. Категорию тегов с id 1 удалять нельзя.";
+$MESS["SEO_META_CT_LIST_DEACTIVATE_ERROR_WITH_DEFAULT_CAT"] = "Ошибка деактивации. Категорию тегов с id 1 деактивировать нельзя.";
