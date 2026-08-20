@@ -133,10 +133,24 @@ label:focus-visible,
     }
 }
 
-/* Footer layout (2026) */
+/* Footer layout (2026)
+   Old theme used position:absolute footer + huge .main padding.
+   After redesign the footer is taller than that padding on mobile,
+   so it covered the homepage content. Keep footer in normal flow. */
 .footer {
+    position: static;
     height: auto;
     padding: 40px 0 28px;
+}
+
+.main {
+    padding-bottom: 40px;
+}
+
+@media (max-width: 991px) {
+    .main {
+        padding-bottom: 24px;
+    }
 }
 
 .footer-main {
