@@ -6,6 +6,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
 return [
     'operator_name' => 'ИП Попов Евгений Игоревич',
     'operator_short' => 'ИП Попов Е. И.',
+    'operator_legal_form' => 'ИП',
     'inn' => '366410187215',
     'site' => 'https://akvasan-shop.ru/',
     'site_host' => 'akvasan-shop.ru',

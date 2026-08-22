@@ -2,32 +2,31 @@
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 }
+require_once __DIR__ . '/legal_export_helpers.php';
 $legal = include $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/legal/config.php';
 require_once __DIR__ . '/third_parties_render.php';
-$op = htmlspecialcharsbx($legal['operator_name']);
-$site = htmlspecialcharsbx($legal['site']);
 $thirdParties = akvasanLegalThirdPartiesData();
 ?>
 <div class="legal-doc legal-doc--policy">
-    <p class="legal-doc__lead"><strong>Политика обработки персональных данных <?= $op ?></strong></p>
+    <p class="legal-doc__lead"><strong>Политика обработки персональных данных <?= legal_var($legal['operator_name']) ?></strong></p>
 
     <p class="legal-doc__related">Связанные документы:
-        <a href="<?= htmlspecialcharsbx($legal['urls']['consent']) ?>">Согласие на обработку персональных данных</a>,
-        <a href="<?= htmlspecialcharsbx($legal['urls']['cookie']) ?>">Политика использования cookie-файлов</a>,
-        <a href="<?= htmlspecialcharsbx($legal['urls']['recommendation']) ?>">Правила применения рекомендательных технологий</a>.
+        <a href="<?= legal_h($legal['urls']['consent']) ?>">Согласие на обработку персональных данных</a>,
+        <a href="<?= legal_h($legal['urls']['cookie']) ?>">Политика использования cookie-файлов</a>,
+        <a href="<?= legal_h($legal['urls']['recommendation']) ?>">Правила применения рекомендательных технологий</a>.
     </p>
 
     <h2>1. Общие положения</h2>
-    <p>1.1. Настоящая Политика обработки персональных данных (далее — «Политика») разработана в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» и определяет порядок обработки персональных данных <?= $op ?> (далее — «Оператор») и меры по обеспечению безопасности персональных данных пользователей сайта <a href="<?= $site ?>" target="_blank" rel="noopener"><?= $site ?></a> (далее — «Сайт»). Данные Оператора указаны в разделе 12 Политики.</p>
+    <p>1.1. Настоящая Политика обработки персональных данных (далее — «Политика») разработана в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» и определяет порядок обработки персональных данных <?= legal_var($legal['operator_name']) ?> (далее — «Оператор») и меры по обеспечению безопасности персональных данных пользователей сайта <?= legal_link($legal['site']) ?> (далее — «Сайт»). Данные Оператора указаны в разделе 12 Политики.</p>
 
     <p>1.2. <strong>Термины и определения:</strong></p>
     <ul>
         <li><strong>Персональные данные</strong> — любая информация, относящаяся к прямо или косвенно определённому или определяемому пользователю Сайта.</li>
         <li><strong>Персональные данные, разрешённые субъектом персональных данных для распространения</strong> — персональные данные, доступ неограниченного круга лиц к которым предоставлен субъектом персональных данных в порядке, предусмотренном Законом о персональных данных.</li>
         <li><strong>Блокирование персональных данных</strong> — временное прекращение обработки персональных данных (за исключением случаев, если обработка необходима для уточнения персональных данных).</li>
-        <li><strong>Веб-сайт (Сайт)</strong> — совокупность веб-страниц, расположенных в сети Интернет по адресу <a href="<?= $site ?>"><?= $site ?></a>.</li>
+        <li><strong>Веб-сайт (Сайт)</strong> — совокупность веб-страниц, расположенных в сети Интернет по адресу <?= legal_link($legal['site']) ?>.</li>
         <li><strong>Обработка персональных данных</strong> — любое действие (операция) или совокупность действий с персональными данными, включая сбор, запись, систематизацию, накопление, хранение, уточнение, извлечение, использование, передачу, блокирование, удаление, уничтожение.</li>
-        <li><strong>Оператор</strong> — <?= $op ?> (ИНН: <?= htmlspecialcharsbx($legal['inn']) ?>), организующий и осуществляющий обработку персональных данных, определяющий цели и состав обрабатываемых персональных данных.</li>
+        <li><strong>Оператор</strong> — <?= legal_var($legal['operator_name']) ?> (ИНН: <?= legal_var($legal['inn']) ?>), организующий и осуществляющий обработку персональных данных, определяющий цели и состав обрабатываемых персональных данных.</li>
         <li><strong>Пользователь</strong> — любой посетитель Сайта.</li>
         <li><strong>Субъект персональных данных (Субъект)</strong> — лицо, чьи персональные данные обрабатывает Оператор.</li>
         <li><strong>Уничтожение персональных данных</strong> — действия, в результате которых персональные данные уничтожаются безвозвратно.</li>
@@ -196,7 +195,7 @@ $thirdParties = akvasanLegalThirdPartiesData();
         <li>Федеральный закон от 27.07.2006 № 149-ФЗ «Об информации, информационных технологиях и о защите информации»;</li>
         <li>Федеральный закон от 13.03.2006 № 38-ФЗ «О рекламе»;</li>
         <li>договоры между Оператором и Субъектами персональных данных;</li>
-        <li><a href="<?= htmlspecialcharsbx($legal['urls']['consent']) ?>">согласия субъектов персональных данных</a>;</li>
+        <li><a href="<?= legal_h($legal['urls']['consent']) ?>">согласия субъектов персональных данных</a>;</li>
         <li>иные нормативные правовые акты РФ и локальные документы Оператора.</li>
     </ul>
 
@@ -207,7 +206,7 @@ $thirdParties = akvasanLegalThirdPartiesData();
     <p>4.3. Оператор вправе передавать персональные данные (предоставление, доступ) и/или поручать обработку следующим третьим лицам в объёме, необходимом для целей Политики:</p>
     <ul>
         <?php foreach ($thirdParties['services'] as $service): ?>
-        <li><?= akvasanLegalRenderThirdPartyPolicyLine($service) ?>;</li>
+        <li<?= legal_li_attr() ?>><?= akvasanLegalRenderThirdPartyPolicyLine($service) ?>;</li>
         <?php endforeach; ?>
         <?php foreach ($thirdParties['generic'] as $item): ?>
         <li><?= htmlspecialcharsbx($item) ?>;</li>
@@ -229,25 +228,25 @@ $thirdParties = akvasanLegalThirdPartiesData();
     </ul>
     <p>5.2. Для реализации прав Субъект может обратиться к Оператору:</p>
     <ul>
-        <li>по адресу: <?= htmlspecialcharsbx($legal['address_legal']) ?>;</li>
-        <li>по e-mail: <a href="mailto:<?= htmlspecialcharsbx($legal['email']) ?>"><?= htmlspecialcharsbx($legal['email']) ?></a>;</li>
-        <li>по телефону: <a href="tel:+74732299621"><?= htmlspecialcharsbx($legal['phone']) ?></a>.</li>
+        <li>по адресу: <?= legal_var($legal['address_legal']) ?>;</li>
+        <li>по e-mail: <?= legal_mailto($legal['email']) ?>;</li>
+        <li>по телефону: <?= legal_tel($legal['phone'], '+74732299621') ?>.</li>
     </ul>
     <p>5.3. Оператор рассматривает обращение и направляет ответ в течение 10 рабочих дней с момента получения, если иной срок не установлен законом.</p>
 
     <h2>6. Порядок отзыва согласия на обработку персональных данных</h2>
     <p>6.1. Субъект вправе отозвать согласие на обработку персональных данных, направив уведомление Оператору:</p>
     <ul>
-        <li>на e-mail: <a href="mailto:<?= htmlspecialcharsbx($legal['email']) ?>"><?= htmlspecialcharsbx($legal['email']) ?></a>;</li>
-        <li>почтой по адресу: <?= htmlspecialcharsbx($legal['address_legal']) ?>.</li>
+        <li>на e-mail: <?= legal_mailto($legal['email']) ?>;</li>
+        <li>почтой по адресу: <?= legal_var($legal['address_legal']) ?>.</li>
     </ul>
-    <p>6.2. В уведомлении указываются Ф.И.О., контактные данные Субъекта и явно выраженная воля на отзыв согласия. Порядок и форма согласия описаны в документе <a href="<?= htmlspecialcharsbx($legal['urls']['consent']) ?>">Согласие на обработку персональных данных</a>.</p>
+    <p>6.2. В уведомлении указываются Ф.И.О., контактные данные Субъекта и явно выраженная воля на отзыв согласия. Порядок и форма согласия описаны в документе <a href="<?= legal_h($legal['urls']['consent']) ?>">Согласие на обработку персональных данных</a>.</p>
     <p>6.3. После отзыва Оператор прекращает обработку и уничтожает данные в сроки, установленные 152-ФЗ, за исключением случаев, когда обработка может продолжаться на иных законных основаниях.</p>
 
     <h2>7. Использование cookie-файлов и рекомендательных технологий</h2>
-    <p>7.1. Сайт использует cookie и аналогичные технологии. Подробности — в <a href="<?= htmlspecialcharsbx($legal['urls']['cookie']) ?>">Политике использования cookie-файлов</a>.</p>
-    <p>7.2. На Сайте применяются рекомендательные технологии. Подробности — в <a href="<?= htmlspecialcharsbx($legal['urls']['recommendation']) ?>">Правилах применения рекомендательных технологий</a>.</p>
-    <p>7.3. Для аналитики использования Сайта Оператор применяет Яндекс.Метрику (<a href="https://yandex.ru/legal/confidential/" target="_blank" rel="noopener">политика конфиденциальности Яндекса</a>).</p>
+    <p>7.1. Сайт использует cookie и аналогичные технологии. Подробности — в <a href="<?= legal_h($legal['urls']['cookie']) ?>">Политике использования cookie-файлов</a>.</p>
+    <p>7.2. На Сайте применяются рекомендательные технологии. Подробности — в <a href="<?= legal_h($legal['urls']['recommendation']) ?>">Правилах применения рекомендательных технологий</a>.</p>
+    <p>7.3. Для аналитики использования Сайта Оператор применяет <?= legal_var('Яндекс.Метрику') ?> (<a href="https://yandex.ru/legal/confidential/" target="_blank" rel="noopener">политика конфиденциальности Яндекса</a>).</p>
     <p>7.4. Пользователь может управлять cookie в настройках браузера. Отключение cookie может ограничить работу корзины и других функций Сайта.</p>
 
     <h2>8. Меры по обеспечению безопасности персональных данных</h2>
@@ -271,16 +270,16 @@ $thirdParties = akvasanLegalThirdPartiesData();
 
     <h2>11. Заключительные положения</h2>
     <p>11.1. Политика действует бессрочно до замены новой версией.</p>
-    <p>11.2. Оператор вправе изменять Политику. Новая редакция вступает в силу с момента размещения на Сайте по адресу <a href="<?= htmlspecialcharsbx($legal['urls']['personal_data']) ?>"><?= htmlspecialcharsbx($legal['site_host']) ?><?= htmlspecialcharsbx($legal['urls']['personal_data']) ?></a>, если иное не указано в новой редакции.</p>
+    <p>11.2. Оператор вправе изменять Политику. Новая редакция вступает в силу с момента размещения на Сайте по адресу <?= legal_internal_link($legal['urls']['personal_data'], $legal['site_host']) ?>, если иное не указано в новой редакции.</p>
 
     <div class="legal-doc__operator">
         <h2>12. Контактная информация оператора</h2>
-        <p><strong><?= $op ?></strong></p>
-        <p>ИНН: <?= htmlspecialcharsbx($legal['inn']) ?></p>
-        <p>Сайт: <a href="<?= $site ?>"><?= $site ?></a></p>
-        <p>Телефон: <a href="tel:+74732299621"><?= htmlspecialcharsbx($legal['phone']) ?></a></p>
-        <p>E-mail: <a href="mailto:<?= htmlspecialcharsbx($legal['email']) ?>"><?= htmlspecialcharsbx($legal['email']) ?></a></p>
-        <p>Адрес: <?= htmlspecialcharsbx($legal['address_legal']) ?></p>
-        <p>Магазин: <?= htmlspecialcharsbx($legal['address_store']) ?></p>
+        <p><strong><?= legal_var($legal['operator_name']) ?></strong></p>
+        <p>ИНН: <?= legal_var($legal['inn']) ?></p>
+        <p>Сайт: <?= legal_link($legal['site']) ?></p>
+        <p>Телефон: <?= legal_tel($legal['phone'], '+74732299621') ?></p>
+        <p>E-mail: <?= legal_mailto($legal['email']) ?></p>
+        <p>Адрес: <?= legal_var($legal['address_legal']) ?></p>
+        <p>Магазин: <?= legal_var($legal['address_store']) ?></p>
     </div>
 </div>

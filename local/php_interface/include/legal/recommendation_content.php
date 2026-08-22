@@ -2,17 +2,15 @@
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 }
+require_once __DIR__ . '/legal_export_helpers.php';
 $legal = include $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/legal/config.php';
 require_once __DIR__ . '/third_parties_render.php';
 $thirdParties = akvasanLegalThirdPartiesData();
-$op = htmlspecialcharsbx($legal['operator_name']);
-$site = htmlspecialcharsbx($legal['site']);
-$email = htmlspecialcharsbx($legal['email']);
 ?>
 <div class="legal-doc">
-    <p class="legal-doc__lead"><strong>Правила применения рекомендательных технологий <?= $op ?></strong></p>
+    <p class="legal-doc__lead"><strong>Правила применения рекомендательных технологий <?= legal_var($legal['operator_name']) ?></strong></p>
 
-    <p>1. <?= $op ?> (ИНН: <?= htmlspecialcharsbx($legal['inn']) ?>, адрес: <?= htmlspecialcharsbx($legal['address_legal']) ?>), далее – ИП, является владельцем сайта <a href="<?= $site ?>" target="_blank" rel="noopener"><?= $site ?></a> («Сайт»).</p>
+    <p>1. <?= legal_var($legal['operator_name']) ?> (ИНН: <?= legal_var($legal['inn']) ?>, адрес: <?= legal_var($legal['address_legal']) ?>), далее – <?= legal_var($legal['operator_legal_form']) ?>, является владельцем сайта <?= legal_link($legal['site']) ?> («Сайт»).</p>
 
     <p>2. Владелец Сайта использует на Сайте рекомендательные технологии.</p>
 
@@ -46,20 +44,20 @@ $email = htmlspecialcharsbx($legal['email']);
     </ul>
 
     <p>6. Описание процессов и методов сбора, систематизации, анализа сведений, относящихся к предпочтениям пользователей сети «Интернет», предоставления информации на основе этих сведений, а также способов осуществления таких процессов и методов:</p>
-    <p>Для привлечения посетителей на страницы Сайта <a href="<?= $site ?>" target="_blank" rel="noopener"><?= $site ?></a>, а также для отслеживания переходов и действий внутри Сайта используются сторонние технологии, такие как:</p>
+    <p>Для привлечения посетителей на страницы Сайта <?= legal_link($legal['site']) ?>, а также для отслеживания переходов и действий внутри Сайта используются сторонние технологии, такие как:</p>
     <ul>
         <?php foreach ($thirdParties['services'] as $service): ?>
             <?php if (empty($service['recommendation'])) {
                 continue;
             } ?>
             <?php foreach ($service['recommendation'] as $block): ?>
-        <li><?= akvasanLegalRenderThirdPartyRecommendationLine($block) ?>;</li>
+        <li<?= legal_li_attr() ?>><?= akvasanLegalRenderThirdPartyRecommendationLine($block) ?>;</li>
             <?php endforeach; ?>
         <?php endforeach; ?>
     </ul>
-    <p>Сведения о действиях пользователей веб-сайта обрабатываются для совершенствования продуктов и услуг ИП, определения предпочтений пользователя, предоставления целевой информации по продуктам и услугам, анализа и настройки рекламы.</p>
+    <p>Сведения о действиях пользователей веб-сайта обрабатываются для совершенствования продуктов и услуг <?= legal_var($legal['operator_legal_form']) ?>, определения предпочтений пользователя, предоставления целевой информации по продуктам и услугам, анализа и настройки рекламы.</p>
 
-    <p>7. Пользователями этих данных являются сотрудники ИП (маркетологи, аналитики, менеджеры продукта и другие вовлечённые лица), а также SEO-партнёры — для индексации и ранжирования страниц ИП в поисковых системах, удобства нахождения клиентами нужных страниц (партнёры используют обезличенные агрегированные данные из Яндекс.Метрики, отслеживая число визитов и количество выполненных целевых действий на страницах сайта).</p>
+    <p>7. Пользователями этих данных являются сотрудники <?= legal_var($legal['operator_legal_form']) ?> (маркетологи, аналитики, менеджеры продукта и другие вовлечённые лица), а также <?= legal_var('SEO-партнёры — для индексации и ранжирования страниц ' . $legal['operator_legal_form'] . ' в поисковых системах, удобства нахождения клиентами нужных страниц (партнёры используют обезличенные агрегированные данные из Яндекс.Метрики, отслеживая число визитов и количество выполненных целевых действий на страницах сайта)') ?>.</p>
 
-    <p>8. Юридически значимые сообщения по вопросам применения рекомендательных технологий могут быть направлены на адрес электронной почты <?= $op ?>: <a href="mailto:<?= $email ?>"><?= $email ?></a>.</p>
+    <p>8. Юридически значимые сообщения по вопросам применения рекомендательных технологий могут быть направлены на адрес электронной почты <?= legal_var($legal['operator_name']) ?>: <?= legal_mailto($legal['email']) ?>.</p>
 </div>

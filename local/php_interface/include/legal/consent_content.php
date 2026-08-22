@@ -2,12 +2,13 @@
 if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 }
+require_once __DIR__ . '/legal_export_helpers.php';
 $legal = include $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/legal/config.php';
 require_once __DIR__ . '/third_parties_render.php';
 $thirdParties = akvasanLegalThirdPartiesData();
 ?>
 <div class="legal-doc legal-doc--consent">
-    <p>1. Настоящим, свободно, своей волей и в своих интересах, добровольно, информировано и сознательно выражаю своё согласие как Субъекта персональных данных на автоматизированную обработку моих персональных данных, включая файлы cookie (далее — ПДн) <?=htmlspecialcharsbx($legal['operator_name'])?>, ИНН: <?=htmlspecialcharsbx($legal['inn'])?>, сайт <a href="<?=htmlspecialcharsbx($legal['site'])?>" target="_blank" rel="noopener"><?=htmlspecialcharsbx($legal['site'])?></a> (далее по тексту — Оператор).</p>
+    <p>1. Настоящим, свободно, своей волей и в своих интересах, добровольно, информировано и сознательно выражаю своё согласие как Субъекта персональных данных на автоматизированную обработку моих персональных данных, включая файлы cookie (далее — ПДн) <?= legal_var($legal['operator_name']) ?>, ИНН: <?= legal_var($legal['inn']) ?>, сайт <?= legal_link($legal['site']) ?> (далее по тексту — Оператор).</p>
 
     <p>2. Обработка моих персональных данных может осуществляться в соответствии с перечнем персональных данных и целями, приведёнными в таблице:</p>
 
@@ -177,7 +178,7 @@ $thirdParties = akvasanLegalThirdPartiesData();
     <p>4.1. Субъект персональных данных согласен с тем, что персональные данные могут быть переданы следующим третьим лицам:</p>
     <ul>
         <?php foreach ($thirdParties['services'] as $service): ?>
-        <li><?= akvasanLegalRenderThirdPartyConsentLine($service) ?>;</li>
+        <li<?= legal_li_attr() ?>><?= akvasanLegalRenderThirdPartyConsentLine($service) ?>;</li>
         <?php endforeach; ?>
         <?php foreach ($thirdParties['generic_consent'] as $item): ?>
         <li><?= htmlspecialcharsbx($item) ?>;</li>
@@ -189,25 +190,25 @@ $thirdParties = akvasanLegalThirdPartiesData();
 
     <p><strong>6. Отзыв согласия:</strong> Субъект персональных данных вправе отозвать согласие на обработку персональных данных, направив уведомление Оператору:</p>
     <ul>
-        <li>по электронной почте: <a href="mailto:<?=htmlspecialcharsbx($legal['email'])?>"><?=htmlspecialcharsbx($legal['email'])?></a>;</li>
-        <li>почтой по адресу: <?=htmlspecialcharsbx($legal['address_legal'])?>.</li>
+        <li>по электронной почте: <?= legal_mailto($legal['email']) ?>;</li>
+        <li>почтой по адресу: <?= legal_var($legal['address_legal']) ?>.</li>
     </ul>
     <p>В уведомлении должны быть указаны ФИО, контактные данные Субъекта персональных данных и явно выраженная воля на отзыв согласия.</p>
 
     <p><strong>7. Срок действия Согласия.</strong> Настоящее согласие даётся бессрочно и действует в течение всего срока обработки и хранения персональных данных для конкретной цели обработки из п. 2.</p>
 
-    <p><strong>8. Согласие с Политикой обработки персональных данных.</strong> Политика обработки персональных данных Оператора постоянно доступна на Сайте по адресу: <a href="<?=htmlspecialcharsbx($legal['urls']['personal_data'])?>"><?=htmlspecialcharsbx($legal['site_host'])?><?=htmlspecialcharsbx($legal['urls']['personal_data'])?></a>. Давая настоящее Согласие, Вы подтверждаете, что ознакомлены и согласны с её положениями.</p>
+    <p><strong>8. Согласие с Политикой обработки персональных данных.</strong> Политика обработки персональных данных Оператора постоянно доступна на Сайте по адресу: <?= legal_internal_link($legal['urls']['personal_data'], $legal['site_host']) ?>. Давая настоящее Согласие, Вы подтверждаете, что ознакомлены и согласны с её положениями.</p>
 
-    <p><strong>9.</strong> Пользователь уведомлён, что он, как субъект персональных данных, имеет право на получение информации, касающейся обработки его персональных данных. Права субъектов персональных данных приведены в <a href="<?=htmlspecialcharsbx($legal['urls']['personal_data'])?>">Политике обработки персональных данных</a>, размещённой на сайте.</p>
+    <p><strong>9.</strong> Пользователь уведомлён, что он, как субъект персональных данных, имеет право на получение информации, касающейся обработки его персональных данных. Права субъектов персональных данных приведены в <a href="<?= legal_h($legal['urls']['personal_data']) ?>">Политике обработки персональных данных</a>, размещённой на сайте.</p>
 
-    <p><strong>10.</strong> Субъект персональных данных может реализовать все права, присущие субъекту персональных данных, а также получить разъяснения по вопросам обработки персональных данных, обратившись к Оператору по адресу электронной почты <a href="mailto:<?=htmlspecialcharsbx($legal['email'])?>"><?=htmlspecialcharsbx($legal['email'])?></a> либо посредством направления обращений почтой по адресу: <?=htmlspecialcharsbx($legal['address_legal'])?>.</p>
+    <p><strong>10.</strong> Субъект персональных данных может реализовать все права, присущие субъекту персональных данных, а также получить разъяснения по вопросам обработки персональных данных, обратившись к Оператору по адресу электронной почты <?= legal_mailto($legal['email']) ?> либо посредством направления обращений почтой по адресу: <?= legal_var($legal['address_legal']) ?>.</p>
 
     <div class="legal-doc__operator">
-        <p><strong>Оператор:</strong> <?=htmlspecialcharsbx($legal['operator_name'])?></p>
-        <p>ИНН: <?=htmlspecialcharsbx($legal['inn'])?></p>
-        <p>Сайт: <a href="<?=htmlspecialcharsbx($legal['site'])?>"><?=htmlspecialcharsbx($legal['site'])?></a></p>
-        <p>Телефон: <a href="tel:+74732299621"><?=htmlspecialcharsbx($legal['phone'])?></a></p>
-        <p>Адрес: <?=htmlspecialcharsbx($legal['address_legal'])?></p>
-        <p>Магазин: <?=htmlspecialcharsbx($legal['address_store'])?></p>
+        <p><strong>Оператор:</strong> <?= legal_var($legal['operator_name']) ?></p>
+        <p>ИНН: <?= legal_var($legal['inn']) ?></p>
+        <p>Сайт: <?= legal_link($legal['site']) ?></p>
+        <p>Телефон: <?= legal_tel($legal['phone'], '+74732299621') ?></p>
+        <p>Адрес: <?= legal_var($legal['address_legal']) ?></p>
+        <p>Магазин: <?= legal_var($legal['address_store']) ?></p>
     </div>
 </div>

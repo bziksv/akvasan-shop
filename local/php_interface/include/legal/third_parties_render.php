@@ -3,6 +3,8 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) {
     die();
 }
 
+require_once __DIR__ . '/legal_export_helpers.php';
+
 function akvasanLegalThirdPartiesData(): array
 {
     static $data = null;
@@ -15,16 +17,16 @@ function akvasanLegalThirdPartiesData(): array
 
 function akvasanLegalRenderThirdPartyPolicyLine(array $service): string
 {
-    $parts = [htmlspecialcharsbx($service['name'])];
+    $parts = [legal_var($service['name'])];
     if (!empty($service['inn'])) {
-        $parts[0] .= ' (ИНН ' . htmlspecialcharsbx($service['inn']) . ')';
+        $parts[0] .= ' (ИНН ' . legal_var($service['inn']) . ')';
     }
 
     $line = $parts[0] . ' — ';
-    $line .= '<a href="' . htmlspecialcharsbx($service['url']) . '" target="_blank" rel="noopener">'
-        . htmlspecialcharsbx($service['link_label']) . '</a>';
+    $line .= '<a href="' . legal_h($service['url']) . '" target="_blank" rel="noopener">'
+        . legal_var($service['link_label']) . '</a>';
     if (!empty($service['suffix'])) {
-        $line .= ', ' . htmlspecialcharsbx($service['suffix']);
+        $line .= ', ' . legal_var($service['suffix']);
     }
 
     return $line;
@@ -32,9 +34,9 @@ function akvasanLegalRenderThirdPartyPolicyLine(array $service): string
 
 function akvasanLegalRenderThirdPartyConsentLine(array $service): string
 {
-    $parts = [htmlspecialcharsbx($service['name'])];
+    $parts = [legal_var($service['name'])];
     if (!empty($service['inn'])) {
-        $parts[0] .= ' (ИНН ' . htmlspecialcharsbx($service['inn']) . ')';
+        $parts[0] .= ' (ИНН ' . legal_var($service['inn']) . ')';
     }
 
     $description = $service['link_label'];
@@ -42,18 +44,18 @@ function akvasanLegalRenderThirdPartyConsentLine(array $service): string
         $description .= ', ' . $service['suffix'];
     }
 
-    return $parts[0] . ' (' . htmlspecialcharsbx($description) . ') — '
-        . '<a href="' . htmlspecialcharsbx($service['url']) . '" target="_blank" rel="noopener">'
-        . htmlspecialcharsbx($service['url']) . '</a>';
+    return $parts[0] . ' (' . legal_var($description) . ') — '
+        . '<a href="' . legal_h($service['url']) . '" target="_blank" rel="noopener">'
+        . legal_var($service['url']) . '</a>';
 }
 
 function akvasanLegalRenderThirdPartyRecommendationLine(array $block): string
 {
     $links = [];
     foreach ($block['urls'] as $url) {
-        $links[] = '<a href="' . htmlspecialcharsbx($url) . '" target="_blank" rel="noopener">'
-            . htmlspecialcharsbx($url) . '</a>';
+        $links[] = '<a href="' . legal_h($url) . '" target="_blank" rel="noopener">'
+            . legal_var($url) . '</a>';
     }
 
-    return implode(', ', $links) . ' — ' . htmlspecialcharsbx($block['text']);
+    return implode(', ', $links) . ' — ' . legal_var($block['text']);
 }
