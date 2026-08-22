@@ -33,7 +33,7 @@ $APPLICATION->SetTitle("Возврат товаров – Магазин сан�
 			Покупки совершенные онлайн, можно вернуть в течение 7 дней с момента получения, если покупку совершена в магазине – возврат можно совершить в течение 14 дней.
 		</p>
 	</div>
-	<img width="200px;" height="200px" src="https://akvasan-shop.ru/upload/medialibrary/bd0/bd0c76f8d465ce4c2f3ce9db154b1a47.png" alt="возврат аквасан">
-</div
+	<img width="200" height="200" src="<?=SITE_TEMPLATE_PATH?>/front/img/vozvrat-akvasan.png" alt="Возврат товаров АкваСан">
+</div>
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

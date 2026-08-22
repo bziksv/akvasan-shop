@@ -243,7 +243,7 @@ if (!function_exists("cmpBySort"))
                 <p><span>Итого:</span> <strong><?=$arResult["ORDER_TOTAL_PRICE_FORMATED"]?></strong></p>
                 <div class="order-consent">
                     <input type="checkbox" id="order_personal_consent" name="ORDER_PERSONAL_CONSENT" value="Y" data-cz-validated-type="checkbox" data-cz-validated-group="group_order" data-cz-validated-msg="* Необходимо дать согласие на обработку персональных данных" />
-                    <label for="order_personal_consent" class="order-consent__text">Я даю согласие на обработку персональных данных в соответствии с <a target="_blank" href="/legal/personal-data/">Политикой обработки персональных данных</a>.</label>
+                    <label for="order_personal_consent" class="order-consent__text">Я даю <a target="_blank" href="/legal/consent/">согласие</a> на обработку персональных данных в соответствии с <a target="_blank" href="/legal/personal-data/">Политикой обработки персональных данных</a>.</label>
                 </div>
 
 					<a href="javascript:void();" id="ORDER_CONFIRM_BUTTON" class="is-more-btn"><span class="compence">Заказать</span></a>

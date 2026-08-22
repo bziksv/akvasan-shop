@@ -138,7 +138,7 @@ if ($arResult["isFormNote"] === "Y") {
             data-cz-validated-msg="* Необходимо дать согласие на обработку персональных данных"
         />
         <label for="callback_personal_consent" class="order-consent__text">
-            Я даю согласие на обработку персональных данных в соответствии с
+            Я даю <a target="_blank" href="/legal/consent/">согласие</a> на обработку персональных данных в соответствии с
             <a target="_blank" href="/legal/personal-data/">Политикой обработки персональных данных</a>.
         </label>
     </div>

@@ -119,7 +119,7 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 	</tfoot>
 </table>
 
-<p class="priv-policy">Нажимая кнопку «Регистрация», вы даёте согласие на обработку персональных данных в соответствии с нашей <a target="_blank" href="/legal/personal-data/">Политикой обработки персональных данных</a>.</p>
+<p class="priv-policy">Нажимая кнопку «Регистрация», вы даёте <a target="_blank" href="/legal/consent/">согласие</a> на обработку персональных данных в соответствии с нашей <a target="_blank" href="/legal/personal-data/">Политикой обработки персональных данных</a>.</p>
 
 
 
