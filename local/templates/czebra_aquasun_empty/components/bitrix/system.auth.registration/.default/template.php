@@ -106,7 +106,7 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 
 	<div class="order-consent auth-form__consent">
 		<input type="checkbox" id="reg_personal_consent" name="REGISTER_PERSONAL_CONSENT" value="Y" data-cz-validated-type="checkbox" data-cz-validated-group="group_registration" data-cz-validated-msg="* Необходимо дать согласие на обработку персональных данных" />
-		<label for="reg_personal_consent" class="order-consent__text">Я даю согласие на обработку персональных данных в соответствии с <a target="_blank" href="/rules-recommendation-akvasan.pdf">Политикой обработки персональных данных</a>.</label>
+		<label for="reg_personal_consent" class="order-consent__text">Я даю согласие на обработку персональных данных в соответствии с <a target="_blank" href="/legal/personal-data/">Политикой обработки персональных данных</a>.</label>
 	</div>
 
 	<div class="auth-form__actions auth-form__actions--center">

@@ -149,7 +149,7 @@ if (strlen($arResult["MESSAGE"]) > 0)
 		<?endif?>
 	<?endif?>
 	<?$btmName = strlen($arParams["MSG_BTN"]) > 0 ? $arParams["MSG_BTN"] : GetMessage("CZEBRA.FORM.BTN_SUBMIT");?>
-	<p>Нажимая на кнопку "<?=$btmName?>", Вы соглашаетесь на обработку персональных данных в соответствии с <a href="/personal-data-akvasan.pdf" target="_blank">политикой конфеденциальности</a></p>
+	<p>Нажимая на кнопку "<?=$btmName?>", Вы соглашаетесь на обработку персональных данных в соответствии с <a href="/legal/personal-data/" target="_blank">политикой конфеденциальности</a></p>
 	<input type="submit" id="<?=$arParams["FORM_ID"]?>_sibmit" name="czebra_submit" value="<?=$btmName?>" />
 </form>
 <?if($arParams["VALIDATED"] == "Y"):?>

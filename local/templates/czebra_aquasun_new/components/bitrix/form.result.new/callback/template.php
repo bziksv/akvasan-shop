@@ -139,7 +139,7 @@ if ($arResult["isFormNote"] === "Y") {
         />
         <label for="callback_personal_consent" class="order-consent__text">
             Я даю согласие на обработку персональных данных в соответствии с
-            <a target="_blank" href="/rules-recommendation-akvasan.pdf">Политикой обработки персональных данных</a>.
+            <a target="_blank" href="/legal/personal-data/">Политикой обработки персональных данных</a>.
         </label>
     </div>
 

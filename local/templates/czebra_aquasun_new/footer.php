@@ -128,12 +128,13 @@ $curPage = $APPLICATION->GetCurPage(true);?><?/*
 
             <div class="footer-legal">
                 Для обеспечения корректной работы сайта мы используем файлы
-                <a href="/politika-cookies-akvasan.pdf" target="_blank">cookie</a>
+                <a href="/legal/cookie/">cookie</a>
                 и
-                <a href="/rules-recommendation-akvasan.pdf" target="_blank">рекомендательные технологии</a>.
+                <a href="/legal/recommendation/">рекомендательные технологии</a>.
                 Сбор информации необходим для персонализации контента, анализа посещаемости и оптимизации функционала.
                 Продолжая пользоваться сайтом, вы даёте согласие на обработку персональных данных в соответствии с
-                <a href="/personal-data-akvasan.pdf" target="_blank">Политикой обработки персональных данных</a>.
+                <a href="/legal/personal-data/">Политикой обработки персональных данных</a>
+                и <a href="/legal/consent/">Согласием на обработку персональных данных</a>.
             </div>
         </div>
     </footer>
